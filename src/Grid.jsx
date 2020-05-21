@@ -35,7 +35,8 @@ const itemTypeProps = {
     minH: 2
   },
   search: {
-    minH: 2
+    minH: 2,
+    minW: 2
   }
 }
 
