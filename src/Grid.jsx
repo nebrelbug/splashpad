@@ -1,16 +1,17 @@
 import React from 'react'
 import RGL, { WidthProvider } from 'react-grid-layout'
-import { Button, FontIcon } from 'react-md'
+import { Button } from 'react-md'
 import AddButtons from './AddItem'
 import Clock from './widgets/Clock'
 import Note from './widgets/Note'
 import Search from './widgets/Search'
 
-import { getFromLS, saveToLS } from './localstorage'
-
 import './Grid.scss'
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
+
+import { getFromLS, saveToLS } from './localstorage'
+var Mousetrap = require('mousetrap')
 
 const ReactGridLayout = WidthProvider(RGL)
 
@@ -83,6 +84,14 @@ export default class AddRemoveLayout extends React.Component {
     this.toggleEditing = this.toggleEditing.bind(this)
     this.onLayoutChange = this.onLayoutChange.bind(this)
     // this.resetLayout = this.resetLayout.bind(this)
+  }
+
+  componentDidMount() {
+    Mousetrap.bind('e', this.toggleEditing)
+  }
+
+  componentWillUnmount() {
+    Mousetrap.unbind('e')
   }
 
   toggleEditing() {

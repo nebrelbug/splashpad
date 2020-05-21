@@ -32,7 +32,7 @@ export default class Clock extends Component {
         }}
       >
         <div style={{ display: 'table-cell', verticalAlign: 'middle' }}>
-          <h2 style={{ margin: 'auto' }}>
+          <h2 style={{ margin: 'auto', textAlign: 'center' }}>
             {this.state.date.toLocaleTimeString()}
           </h2>
         </div>
