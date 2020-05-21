@@ -1,114 +1,139 @@
 import React from 'react'
-import { Button } from 'react-md'
+import {
+  Button,
+  FontIcon,
+  DialogContainer,
+  List,
+  ListItem,
+  Subheader,
+  Divider,
+  Avatar
+} from 'react-md'
 
-export default class AddButtons extends React.Component {
+const InfoIcon = () => <FontIcon>info</FontIcon>
+
+var itemsToAdd = [
+  { name: 'Sticky Note', key: 'note', icon: 'note', color: 'amber' },
+  { name: 'Searchbar', key: 'search', icon: 'search' },
+  { name: 'Clock', key: 'clock', icon: 'schedule' }
+]
+export default class AddButtons extends React.PureComponent {
   constructor(props) {
     super(props)
 
     this.state = {
-      hovered: false
+      visible: false,
+      addButtonHovered: false
     }
 
-    this.mouseOver = this.mouseOver.bind(this)
     this.mouseOut = this.mouseOut.bind(this)
+    this.mouseOver = this.mouseOver.bind(this)
+  }
+
+  show = () => {
+    this.setState({ visible: true })
+  }
+
+  hide = () => {
+    this.setState({ visible: false })
   }
 
   mouseOver() {
-    this.setState({ hovered: true })
+    this.setState({ addButtonHovered: true })
   }
 
   mouseOut() {
-    this.setState({ hovered: false })
+    this.setState({ addButtonHovered: false })
+  }
+
+  handleKeyDown = (e) => {
+    const key = e.which || e.keyCode
+    if (key === 13 || key === 32) {
+      // also close on enter or space keys
+      this.hide()
+    }
   }
 
   render() {
     console.log(this.state.items)
     return (
-      <div
-        style={{
-          position: 'fixed',
-          right: 64,
-          bottom: 8,
-          height: this.state.hovered ? 168 : 48,
-          width: 48
-        }}
-        onMouseEnter={this.mouseOver}
-        onMouseLeave={this.mouseOut}
-      >
-        <Button
+      <>
+        {/* Some easy-access buttons */}
+        <div
           style={{
             position: 'fixed',
             right: 64,
             bottom: 8,
             height: 48,
-            width: 48,
-            padding: 12
+            width: this.state.addButtonHovered ? 48 + 8 + 48 : 48
           }}
-          icon
-          // secondary
-          swapTheming
+          onMouseEnter={this.mouseOver}
+          onMouseLeave={this.mouseOut}
         >
-          add_circle_outline
-        </Button>
-        {this.state.hovered && (
-          <>
+          {this.state.addButtonHovered && (
             <Button
               style={{
                 position: 'fixed',
-                right: 64,
-                bottom: 64,
+                right: 120,
+                bottom: 8,
                 height: 48,
                 width: 48,
                 padding: 12
               }}
               icon
-              primary
+              // secondary
               swapTheming
-              onClick={() => {
-                this.props.onAddItem('note')
-              }}
+              onClick={this.show}
             >
-              note
+              note_add
             </Button>
-            <Button
-              style={{
-                position: 'fixed',
-                right: 64,
-                bottom: 120,
-                height: 48,
-                width: 48,
-                padding: 12
-              }}
-              icon
-              primary
-              swapTheming
-              onClick={() => {
-                this.props.onAddItem('clock')
-              }}
-            >
-              schedule
-            </Button>
-            <Button
-              style={{
-                position: 'fixed',
-                right: 64,
-                bottom: 176,
-                height: 48,
-                width: 48,
-                padding: 12
-              }}
-              icon
-              primary
-              swapTheming
-              onClick={() => {
-                this.props.onAddItem('search')
-              }}
-            >
-              more_horizontal
-            </Button>
-          </>
-        )}
-      </div>
+          )}
+          <Button
+            style={{
+              position: 'fixed',
+              right: 64,
+              bottom: 8,
+              height: 48,
+              width: 48,
+              padding: 12
+            }}
+            icon
+            // secondary
+            swapTheming
+            onClick={this.show}
+          >
+            add_circle_outline
+          </Button>
+        </div>
+        <DialogContainer
+          id='add-widget-dialog'
+          visible={this.state.visible}
+          title='Add Widget'
+          onHide={this.hide}
+        >
+          <List className=''>
+            {/* <Subheader primaryText='Folders' /> */}
+            {itemsToAdd.map(({ name, key, icon, color }) => (
+              <ListItem
+                leftAvatar={
+                  <Avatar
+                    suffix={color}
+                    icon={<FontIcon>{icon}</FontIcon>}
+                    random
+                  />
+                }
+                onClick={() => {
+                  this.hide()
+                  this.props.addItem(key)
+                }}
+                // rightIcon={<InfoIcon />}
+                primaryText={name}
+                // secondaryText='Jan 9, 2014'
+              />
+            ))}
+          </List>
+        </DialogContainer>
+      </>
     )
   }
 }

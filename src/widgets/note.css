@@ -46,8 +46,8 @@
   resize: none !important;
   margin: auto;
   border-width: 0px !important;
-  margin-top: 6px;
-  height: calc(100% - 36px);
+  margin-top: 10px;
+  height: calc(100% - 40px);
 }
 
 .postbody::-webkit-scrollbar-track {

@@ -32,11 +32,14 @@ const defaultItems = [
 
 const itemTypeProps = {
   note: {
-    minH: 2
+    minH: 2,
+    w: 3,
+    h: 4
   },
   search: {
     minH: 2,
-    minW: 2
+    minW: 2,
+    w: 4
   }
 }
 
@@ -211,13 +214,14 @@ export default class AddRemoveLayout extends React.Component {
             useCSSTransforms={true}
             isDraggable={this.state.editing}
             isResizable={this.state.editing}
+            preventCollision={true}
             // draggableHandle='.draggableOverlay'
             {...this.props}
           >
             {this.state.items.map((el, index) => this.createElement(el, index))}
           </ReactGridLayout>
         </div>
-        <AddButtons onAddItem={this.onAddItem} />
+        <AddButtons addItem={this.onAddItem} />
         <Button
           style={{
             position: 'fixed',
