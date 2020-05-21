@@ -10,10 +10,20 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
+    "@types/react-grid-layout": "^0.17.1",
+    "lodash": "^4.17.15",
+    "lorem-ipsum": "^2.0.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-grid-layout": "^0.18.3",
+    "react-md": "^1.16.1",
+    "react-redux": "^7.2.0",
     "react-scripts": "3.4.1",
-    "typescript": "~3.7.2"
+    "react-select": "^3.1.0",
+    "redux": "^4.0.5",
+    "typescript": "~3.7.2",
+    "uuid": "^8.0.0",
+    "webfontloader": "^1.6.28"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -35,5 +45,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/webfontloader": "^1.6.30",
+    "node-sass": "^4.14.1"
   }
 }

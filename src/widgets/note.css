@@ -1,0 +1,69 @@
+/* Taken w/ gratitude from */
+/* https://mentormate.com/blog/css-postit-note/ */
+/* and modified a bit */
+
+.postit {
+  line-height: 1;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  /* border: 1px solid #e8e8e8; */
+  border-top: 1px solid #fdfd86;
+  font-family: 'Reenie Beanie';
+  font-size: 22px;
+  border-bottom-left-radius: 60px 5px;
+  display: inline-block;
+  background: #ffff88; /* Old browsers */
+
+  background: linear-gradient(
+    225deg,
+    #ffff88 81%,
+    #ffff88 82%,
+    #ffff88 82%,
+    #ffffc6 100%
+  );
+  /* W3C */
+  /* filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffff88', endColorstr='#ffffc6',GradientType=1 ); */
+  /* IE6-9 fallback on horizontal gradient */
+}
+
+.postit:after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: -0px;
+  bottom: 13px;
+  width: 20px;
+  height: 25px;
+  background: rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 15px 5px rgba(0, 0, 0, 0.4);
+  /* transform: matrix(-1, -0.1, 0, 1, 0, 0); */
+  transform: matrix(1, -0.1, 0, 1, 0, 0);
+}
+
+.postbody {
+  resize: none !important;
+  margin: auto;
+  border-width: 0px !important;
+  margin-top: 6px;
+  height: calc(100% - 36px);
+}
+
+.postbody::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+}
+
+.postbody::-webkit-scrollbar-thumb {
+  cursor: pointer;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.25);
+  -webkit-transition: color 0.2s ease;
+  transition: color 0.2s ease;
+}
+
+.postbody::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 6px;
+}

@@ -1,0 +1,21 @@
+@import '~react-md/src/scss/react-md';
+
+$md-light-theme: true; // optional for light theme
+$md-primary-color: $md-light-blue-500;
+$md-secondary-color: $md-deep-orange-a-200;
+
+.material-icons {
+  font-size: 24px !important;
+}
+
+.md-drawer--mini.md-drawer--mini {
+  width: 56px !important;
+}
+
+.md-list-tile {
+  height: 48px !important;
+}
+
+.md-tile-content--left-icon {
+  padding-left: 0px !important;
+}
