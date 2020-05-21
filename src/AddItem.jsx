@@ -45,7 +45,7 @@ export default class AddButtons extends React.Component {
             padding: 12
           }}
           icon
-          secondary
+          // secondary
           swapTheming
         >
           add_circle_outline

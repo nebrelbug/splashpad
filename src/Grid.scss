@@ -10,9 +10,9 @@
 .react-grid-item {
   box-sizing: border-box;
 }
-.react-grid-item:not(.react-grid-placeholder) {
-  background: #e0e0e0;
-}
+// .react-grid-item:not(.react-grid-placeholder) {
+//   background: #e0e0e0;
+// }
 
 .react-grid-item.resizing {
   opacity: 0.9;

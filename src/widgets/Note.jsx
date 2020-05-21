@@ -1,27 +1,32 @@
 import React, { Component } from 'react'
 import { TextField } from 'react-md'
+import { getFromLS, saveToLS } from '../localstorage'
 
 import './note.css'
 
-export default class Clock extends Component {
+export default class Note extends Component {
   constructor(props) {
     super(props)
-    this.state = { date: new Date() }
+    var originalContent = getFromLS('note:--' + props.uniqueKey) || {
+      title: '',
+      content: ''
+    }
+    this.state = originalContent
+    this.updateTitle = this.updateTitle.bind(this)
+    this.updateContent = this.updateContent.bind(this)
   }
 
-  // componentDidMount() {
-  //   this.timerID = setInterval(() => this.tick(), 1000)
-  // }
+  updateTitle(event) {
+    this.setState({ title: event.target.value }, () => {
+      saveToLS('note:--' + this.props.uniqueKey, this.state)
+    })
+  }
 
-  // componentWillUnmount() {
-  //   clearInterval(this.timerID)
-  // }
-
-  // tick() {
-  //   this.setState({
-  //     date: new Date()
-  //   })
-  // }
+  updateContent(event) {
+    this.setState({ content: event.target.value }, () => {
+      saveToLS('note:--' + this.props.uniqueKey, this.state)
+    })
+  }
 
   render() {
     return (
@@ -39,12 +44,16 @@ export default class Clock extends Component {
               margin: 'auto',
               fontSize: '24px'
             }}
+            value={this.state.title}
+            onChange={this.updateTitle}
           />
           <textarea
             class='postbody md-text-field md-text-field--multiline md-full-width md-text'
             placeholder='Note to self...'
+            value={this.state.content}
+            onChange={this.updateContent}
             // style={{ marginTop: '6px', height: 'calc(100%-36px)' }}
-          ></textarea>
+          />
         </div>
       </div>
     )

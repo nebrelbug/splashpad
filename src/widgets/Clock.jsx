@@ -22,8 +22,20 @@ export default class Clock extends Component {
 
   render() {
     return (
-      <div>
-        <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+      <div
+        style={{
+          padding: '6px',
+          position: 'absolute',
+          display: 'table',
+          width: '100%',
+          height: '100%'
+        }}
+      >
+        <div style={{ display: 'table-cell', verticalAlign: 'middle' }}>
+          <h2 style={{ margin: 'auto' }}>
+            {this.state.date.toLocaleTimeString()}
+          </h2>
+        </div>
       </div>
     )
   }

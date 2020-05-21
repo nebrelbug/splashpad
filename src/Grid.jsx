@@ -42,7 +42,7 @@ const originalItems = getFromLS('items') || defaultItems
 
 const currentCount = getFromLS('currentCount') || 0
 
-function getComponent(type) {
+function getComponent(type, uniqueKey) {
   if (type === 'hi') {
     return <Hi />
   } else if (type === 'date') {
@@ -50,7 +50,7 @@ function getComponent(type) {
   } else if (type === 'clock') {
     return <Clock />
   } else if (type === 'note') {
-    return <Note />
+    return <Note uniqueKey={uniqueKey} />
   } else if (type === 'search') {
     return <Search />
   } else {
@@ -112,7 +112,11 @@ export default class AddRemoveLayout extends React.Component {
   createElement(el, ind) {
     const key = el.i
     return (
-      <div key={key} data-grid={el}>
+      <div
+        key={key}
+        data-grid={el}
+        style={{ background: this.state.editing ? '#e0e0e0' : 'none' }}
+      >
         {this.state.editing && (
           <Button
             style={{
@@ -190,7 +194,7 @@ export default class AddRemoveLayout extends React.Component {
             {this.state.items.map((el, index) => this.createElement(el, index))}
           </ReactGridLayout>
         </div>
-        {this.state.editing && <AddButtons onAddItem={this.onAddItem} />}
+        <AddButtons onAddItem={this.onAddItem} />
         <Button
           style={{
             position: 'fixed',
@@ -205,7 +209,7 @@ export default class AddRemoveLayout extends React.Component {
           swapTheming
           onClick={this.toggleEditing}
         >
-          edit
+          {this.state.editing ? 'done' : 'edit'}
         </Button>
       </>
     )
