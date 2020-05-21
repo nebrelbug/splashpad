@@ -63,3 +63,7 @@
 .smallButton i {
   font-size: 18px !important;
 }
+
+.draggableOverlay:hover {
+  cursor: grab;
+}

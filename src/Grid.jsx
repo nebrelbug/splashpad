@@ -149,6 +149,18 @@ export default class AddRemoveLayout extends React.Component {
           </Button>
         )}
         {getComponent(el.type, ind)}
+        {this.state.editing && (
+          <div
+            style={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              top: '0px',
+              left: '0px'
+            }}
+            className='draggableOverlay'
+          />
+        )}
       </div>
     )
   }
@@ -199,6 +211,7 @@ export default class AddRemoveLayout extends React.Component {
             useCSSTransforms={true}
             isDraggable={this.state.editing}
             isResizable={this.state.editing}
+            // draggableHandle='.draggableOverlay'
             {...this.props}
           >
             {this.state.items.map((el, index) => this.createElement(el, index))}
