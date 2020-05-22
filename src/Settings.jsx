@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import {
   Button,
   DialogContainer,
@@ -6,13 +6,29 @@ import {
   TextField,
   Toolbar,
   FileUpload,
+  Grid,
+  Cell,
   Tabs,
   SelectionControlGroup,
   Tab,
   TabsContainer
 } from 'react-md'
+
+import ColorPicker from './ColorPicker'
+
 import BackgroundImageChooser from './FileUpload'
-export default class SimpleFullPageDialog extends PureComponent {
+
+import { getFromLS, saveToLS } from './localstorage'
+
+const originalBackgroundColor = getFromLS('background-color') || '#fafafa'
+
+function setBackgroundColor(color) {
+  document.body.style.background = color
+  saveToLS('background-color', color)
+}
+
+setBackgroundColor(originalBackgroundColor)
+export default class SimpleFullPageDialog extends Component {
   render() {
     const { visible, pageX, pageY } = this.props
 
@@ -52,38 +68,45 @@ export default class SimpleFullPageDialog extends PureComponent {
         </section> */}
 
         <TabsContainer
-          panelClassName='md-grid'
+          // panelClassName='md-grid'
           colored
           primary
           toolbar={TheToolbar}
         >
           <Tabs tabId='simple-tab'>
             <Tab label='Appearance'>
-              <div className='md-cell'>
-                <SelectionControlGroup
-                  id='selection-control-group-radios'
-                  name='radio-example'
-                  type='radio'
-                  label={'Background'}
-                  defaultValue='Default'
-                  controls={[
-                    {
-                      label: 'Default',
-                      value: 'Default'
-                    },
-                    {
-                      label: 'Custom Image',
-                      value: 'Image'
-                    },
-                    {
-                      label: 'Color',
-                      value: 'Color'
-                    }
-                  ]}
-                />
-              </div>
+              <Grid className='grid-example'>
+                <Cell size={2}>
+                  {' '}
+                  <SelectionControlGroup
+                    id='selection-control-group-radios'
+                    name='radio-example'
+                    type='radio'
+                    label={'Background'}
+                    defaultValue='Default'
+                    controls={[
+                      {
+                        label: 'Color (1st swatch is default)',
+                        value: 'Color'
+                      },
+                      {
+                        label: 'Custom Image',
+                        value: 'Image'
+                      }
+                    ]}
+                  />
+                </Cell>
+                <Cell size={4}>
+                  <ColorPicker
+                    initialColor={originalBackgroundColor}
+                    handleChangeComplete={setBackgroundColor}
+                    // onChangeComplete={this.handleChangeComplete}
+                  />
+                </Cell>
+              </Grid>
+
               <br />
-              <BackgroundImageChooser />
+              {/* <BackgroundImageChooser /> */}
             </Tab>
             <Tab label='Miscellaneous'>
               <h3>Now look at me!</h3>

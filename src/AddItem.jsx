@@ -10,6 +10,8 @@ import {
   Avatar
 } from 'react-md'
 
+var Mousetrap = require('mousetrap')
+
 const InfoIcon = () => <FontIcon>info</FontIcon>
 
 var itemsToAdd = [
@@ -30,12 +32,24 @@ export default class AddButtons extends React.PureComponent {
     this.mouseOver = this.mouseOver.bind(this)
   }
 
+  componentDidMount() {
+    Mousetrap.bind('p', this.toggleEditing)
+  }
+
+  componentWillUnmount() {
+    Mousetrap.unbind('p')
+  }
+
   show = () => {
     this.setState({ visible: true })
   }
 
   hide = () => {
     this.setState({ visible: false })
+  }
+
+  toggleEditing = () => {
+    this.setState({ visible: !this.state.visible })
   }
 
   mouseOver() {
@@ -50,12 +64,11 @@ export default class AddButtons extends React.PureComponent {
     const key = e.which || e.keyCode
     if (key === 13 || key === 32) {
       // also close on enter or space keys
-      this.hide()
+      // this.hide()
     }
   }
 
   render() {
-    console.log(this.state.items)
     return (
       <>
         {/* Some easy-access buttons */}
@@ -83,7 +96,9 @@ export default class AddButtons extends React.PureComponent {
               icon
               // secondary
               swapTheming
-              onClick={this.show}
+              onClick={() => {
+                this.props.addItem('note')
+              }}
             >
               note_add
             </Button>
@@ -113,7 +128,7 @@ export default class AddButtons extends React.PureComponent {
         >
           <List className=''>
             {/* <Subheader primaryText='Folders' /> */}
-            {itemsToAdd.map(({ name, key, icon, color }) => (
+            {itemsToAdd.map(({ name, key, icon, color }, i) => (
               <ListItem
                 leftAvatar={
                   <Avatar
@@ -129,6 +144,7 @@ export default class AddButtons extends React.PureComponent {
                 // rightIcon={<InfoIcon />}
                 primaryText={name}
                 // secondaryText='Jan 9, 2014'
+                key={i}
               />
             ))}
           </List>

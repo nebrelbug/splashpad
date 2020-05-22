@@ -80,7 +80,7 @@ export default class AddRemoveLayout extends React.Component {
     this.state = {
       items: originalItems,
       newCounter: currentCount,
-      editing: false
+      editing: true
     }
 
     this.onAddItem = this.onAddItem.bind(this)
@@ -122,36 +122,103 @@ export default class AddRemoveLayout extends React.Component {
     )
   }
 
+  findPositionForItem = (newItem) => {
+    let items = this.state.items
+
+    var grid = Array.from({ length: 12 }, () => []) // This is to make sure the columns aren't deep linked
+
+    items.forEach((item) => {
+      for (var col = item.x; col < item.x + item.w; col++) {
+        for (var row = item.y; row < item.y + item.h; row++) {
+          grid[col][row] = true // filled
+        }
+      }
+    })
+
+    // window.grid = grid
+
+    function checkForSpace(x, y, width, height) {
+      for (var col = x; col < x + width; col++) {
+        for (var row = y; row < y + height; row++) {
+          if (grid[col][row] === true) {
+            // filled
+            return false
+          }
+        }
+      }
+      return true
+    }
+
+    for (var y = 0; y < 10000; y++) {
+      for (var x = 0; x < 12; x++) {
+        if (grid[x][y] !== true) {
+          if (checkForSpace(x, y, newItem.w, newItem.h)) {
+            return [x, y]
+          }
+        }
+      }
+    }
+    // TIME OUT
+    throw new Error(
+      'Could not find a place for new item in the first 10000 rows'
+    )
+
+    return [0, 0]
+  }
+
   createElement(el, ind) {
     const key = el.i
     return (
       <div
         key={key}
         data-grid={el}
-        style={{ background: this.state.editing ? '#e0e0e0' : 'none' }}
+        style={{
+          background: this.state.editing ? 'rgba(200, 200, 200, 0.5)' : 'none'
+        }}
       >
         {this.state.editing && (
-          <Button
-            style={{
-              height: 18,
-              width: 18,
-              padding: 0,
-              zIndex: 999,
-              float: 'right',
-              position: 'absolute',
-              top: -8,
-              right: -8
-            }}
-            className='smallButton'
-            icon
-            onClick={() => {
-              this.onRemoveItem(ind)
-            }}
-          >
-            cancel
-          </Button>
+          <>
+            <Button
+              style={{
+                height: 18,
+                width: 18,
+                padding: 0,
+                zIndex: 999,
+                float: 'left',
+                position: 'absolute',
+                top: -8,
+                left: -8
+              }}
+              className='smallButton'
+              icon
+              onClick={() => {
+                this.onRemoveItem(ind)
+              }}
+            >
+              settings_applications
+            </Button>
+            <Button
+              style={{
+                height: 18,
+                width: 18,
+                padding: 0,
+                zIndex: 999,
+                float: 'right',
+                position: 'absolute',
+                top: -8,
+                right: -8
+              }}
+              className='smallButton'
+              icon
+              onClick={() => {
+                this.onRemoveItem(ind)
+              }}
+            >
+              cancel
+            </Button>
+          </>
         )}
-        {getComponent(el.type, ind)}
+        {getComponent(el.type, key)}
         {this.state.editing && (
           <div
             style={{
@@ -171,19 +238,24 @@ export default class AddRemoveLayout extends React.Component {
   onAddItem(type) {
     /*eslint no-console: 0*/
     var itemConstraints = itemTypeProps[type] || {}
-    console.log('adding', 'n' + this.state.newCounter)
+    // console.log('adding', 'n' + this.state.newCounter)
+    var newItem = {
+      i: 'n' + this.state.newCounter,
+      x: 0,
+      y: 0, // puts it at the bottom
+      w: 2,
+      h: 2,
+      type: type,
+      ...itemConstraints
+    }
+
+    var [x, y] = this.findPositionForItem(newItem)
+    newItem.x = x
+    newItem.y = y
     this.setState(
       {
         // Add a new item. It must have a unique key!
-        items: this.state.items.concat({
-          i: 'n' + this.state.newCounter,
-          x: 0,
-          y: 0, // puts it at the bottom
-          w: 2,
-          h: 2,
-          type: type,
-          ...itemConstraints
-        }),
+        items: this.state.items.concat(newItem),
         // Increment the counter to ensure key is always unique.
         newCounter: this.state.newCounter + 1
       },

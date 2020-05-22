@@ -8,8 +8,7 @@
   width: 100%;
   height: 100%;
   position: relative;
-  border-bottom: 1px solid #e8e8e8;
-  border-right: 1px solid #e8e8e8;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
   border-top: 1px solid #fdfd86;
   font-size: 22px;
   border-bottom-left-radius: 40px 5px;
@@ -37,7 +36,7 @@
   width: 20px;
   height: 25px;
   background: rgba(0, 0, 0, 0.2);
-  box-shadow: 2px 15px 5px rgba(0, 0, 0, 0.4);
+  box-shadow: 0.5px 16px 5px rgba(0, 0, 0, 0.4);
   /* transform: matrix(-1, -0.1, 0, 1, 0, 0); */
   transform: matrix(1, -0.1, 0, 1, 0, 0);
 }

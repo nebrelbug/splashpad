@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react'
 import { Button, Drawer } from 'react-md'
 import Grid from './Grid'
 import Settings from './Settings'
-import inboxListItems from './constants/inboxListItems'
 import inkContextTypes from 'react-md/lib/Inks/inkContextTypes'
 
 export default class App extends PureComponent {
@@ -47,7 +46,7 @@ export default class App extends PureComponent {
           swapTheming
           onClick={this.toggleSettings}
         >
-          {this.state.settingsOpen ? 'highlight_off' : 'settings'}
+          {this.state.settingsOpen ? 'check' : 'settings'}
         </Button>
         {/* <Drawer
           id='simple-drawer-example'
