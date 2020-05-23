@@ -84,7 +84,7 @@ export default class AddButtons extends React.PureComponent {
           onMouseEnter={this.mouseOver}
           onMouseLeave={this.mouseOut}
         >
-          {this.state.addButtonHovered && (
+          {/* {this.state.addButtonHovered && (
             <Button
               style={{
                 position: 'fixed',
@@ -104,7 +104,7 @@ export default class AddButtons extends React.PureComponent {
             >
               note_add
             </Button>
-          )}
+          )} */}
           <Button
             style={{
               position: 'fixed',

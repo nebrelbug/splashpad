@@ -22,10 +22,6 @@ var Mousetrap = require('mousetrap')
 
 const ReactGridLayout = WidthProvider(RGL)
 
-function Hi() {
-  return <span className='text'>HI!!!</span>
-}
-
 function Date() {
   return <span className='text'>{'05-22-33'}</span>
 }
@@ -50,19 +46,47 @@ const itemTypeProps = {
   }
 }
 
-function getComponent(type, uniqueKey) {
-  if (type === 'hi') {
-    return <Hi />
-  } else if (type === 'date') {
-    return <Date />
+function getComponent(type, uniqueKey, widgetSettings, hideSettings) {
+  if (type === 'date') {
+    return (
+      <Date
+        uniqueKey={uniqueKey}
+        settingsVisible={widgetSettings === uniqueKey}
+        hideSettings={hideSettings}
+      />
+    )
   } else if (type === 'clock') {
-    return <Clock />
+    return (
+      <Clock
+        uniqueKey={uniqueKey}
+        settingsVisible={widgetSettings === uniqueKey}
+        hideSettings={hideSettings}
+      />
+    )
   } else if (type === 'note') {
-    return <Note uniqueKey={uniqueKey} />
+    return (
+      <Note
+        uniqueKey={uniqueKey}
+        settingsVisible={widgetSettings === uniqueKey}
+        hideSettings={hideSettings}
+      />
+    )
   } else if (type === 'search') {
-    return <Search />
+    return (
+      <Search
+        uniqueKey={uniqueKey}
+        settingsVisible={widgetSettings === uniqueKey}
+        hideSettings={hideSettings}
+      />
+    )
   } else if (type === 'text') {
-    return <Text uniqueKey={uniqueKey} />
+    return (
+      <Text
+        uniqueKey={uniqueKey}
+        settingsVisible={widgetSettings === uniqueKey}
+        hideSettings={hideSettings}
+      />
+    )
   } else {
     return <span className='text'>UNKNOWN</span>
   }
@@ -90,13 +114,10 @@ export default class WidgetGrid extends React.Component {
     this.state = {
       items: widgets || [],
       widgetCount: widgetCount || false,
-      editing: false
+      editing: false,
+      widgetSettings: 'widget-4'
     }
 
-    this.onAddItem = this.onAddItem.bind(this)
-    this.onRemoveItem = this.onRemoveItem.bind(this)
-    this.toggleEditing = this.toggleEditing.bind(this)
-    this.onLayoutChange = this.onLayoutChange.bind(this)
     // this.resetLayout = this.resetLayout.bind(this)
   }
 
@@ -115,11 +136,19 @@ export default class WidgetGrid extends React.Component {
     Mousetrap.unbind('e')
   }
 
-  toggleEditing() {
-    this.setState({ editing: !this.state.editing })
+  toggleEditing = () => {
+    this.setState({ editing: !this.state.editing, widgetSettings: false })
   }
 
-  onLayoutChange(layout) {
+  showWidgetSettings = (uniqueKey) => {
+    this.setState({ widgetSettings: uniqueKey })
+  }
+
+  hideWidgetSettings = () => {
+    this.setState({ widgetSettings: false })
+  }
+
+  onLayoutChange = (layout) => {
     // this.props.onLayoutChange(layout)
     // console.log('layout: ')
     // console.log(layout)
@@ -188,6 +217,9 @@ export default class WidgetGrid extends React.Component {
 
   createElement(el, ind) {
     const key = el.i
+    console.log(
+      `this.state.widgetSettings = ${this.state.widgetSettings}, key = ${key}`
+    )
     return (
       <div
         key={key}
@@ -220,7 +252,12 @@ export default class WidgetGrid extends React.Component {
             </Button>
           </>
         )}
-        {getComponent(el.type, key)}
+        {getComponent(
+          el.type,
+          key,
+          this.state.widgetSettings,
+          this.hideWidgetSettings
+        )}
         {this.state.editing && (
           <div
             style={{
@@ -260,7 +297,7 @@ export default class WidgetGrid extends React.Component {
                   className='editButton'
                   icon
                   onClick={() => {
-                    this.onRemoveItem(ind)
+                    this.showWidgetSettings(key)
                   }}
                 >
                   settings
@@ -273,7 +310,7 @@ export default class WidgetGrid extends React.Component {
     )
   }
 
-  onAddItem(type) {
+  onAddItem = (type) => {
     /*eslint no-console: 0*/
     var itemConstraints = itemTypeProps[type] || {}
     // console.log('adding', 'n' + this.state.newCounter)
@@ -303,7 +340,7 @@ export default class WidgetGrid extends React.Component {
     )
   }
 
-  onRemoveItem(i) {
+  onRemoveItem = (i) => {
     console.log('removing', i)
     this.setState({
       items: this.state.items.filter(function (item, ind) {
@@ -315,14 +352,14 @@ export default class WidgetGrid extends React.Component {
   render() {
     console.log(this.state.items)
     return (
-      <>
+      <div>
         <div>
           <ReactGridLayout
             onLayoutChange={this.onLayoutChange}
             onBreakpointChange={this.onBreakpointChange}
             measureBeforeMount={true}
             useCSSTransforms={true}
-            isDraggable={this.state.editing}
+            isDraggable={this.state.editing && !this.state.widgetSettings}
             isResizable={this.state.editing}
             preventCollision={true}
             draggableCancel='.editButton'
@@ -353,7 +390,7 @@ export default class WidgetGrid extends React.Component {
         >
           {this.state.editing ? 'done' : 'edit'}
         </Button>
-      </>
+      </div>
     )
   }
 }

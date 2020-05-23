@@ -19,11 +19,9 @@ export default class App extends PureComponent {
     this.state = {
       settingsOpen: false
     }
-
-    this.toggleSettings = this.toggleSettings.bind(this)
   }
 
-  toggleSettings() {
+  toggleSettings = () => {
     this.setState({ settingsOpen: !this.state.settingsOpen })
   }
 
@@ -47,7 +45,7 @@ export default class App extends PureComponent {
           icon
           swapTheming
           onClick={this.toggleSettings}
-          className="actionButton"
+          className='actionButton'
         >
           {this.state.settingsOpen ? 'check' : 'settings'}
         </Button>

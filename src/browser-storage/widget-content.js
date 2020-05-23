@@ -21,8 +21,37 @@ function saveWidgetContent(uniqueWidgetId, newContent) {
     })
 }
 
+function saveWidgetSettings(uniqueWidgetId, newSettings) {
+  widgetContentStore
+    .getItem(uniqueWidgetId)
+    .then(function (oldContent) {
+      // This code runs once the value has been loaded
+      // from the offline store.
+      widgetContentStore.setItem(uniqueWidgetId, {
+        ...oldContent,
+        settings: {
+          ...oldContent.settings,
+          ...newSettings
+        }
+      })
+    })
+    .catch(function (err) {
+      // This code runs if there were any errors
+      console.log(err)
+    })
+}
+
 async function getWidgetContent(uniqueWidgetId) {
   return await widgetContentStore.getItem(uniqueWidgetId)
 }
 
-export { saveWidgetContent, getWidgetContent }
+async function getWidgetSettings(uniqueWidgetId) {
+  return (await widgetContentStore.getItem(uniqueWidgetId).settings) || {}
+}
+
+export {
+  saveWidgetContent,
+  getWidgetContent,
+  saveWidgetSettings,
+  getWidgetSettings
+}
