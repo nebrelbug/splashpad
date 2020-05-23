@@ -17,7 +17,8 @@ const InfoIcon = () => <FontIcon>info</FontIcon>
 var itemsToAdd = [
   { name: 'Sticky Note', key: 'note', icon: 'note', color: 'amber' },
   { name: 'Searchbar', key: 'search', icon: 'search' },
-  { name: 'Clock', key: 'clock', icon: 'schedule' }
+  { name: 'Clock', key: 'clock', icon: 'schedule' },
+  { name: 'Text', key: 'text', icon: 'text_fields' }
 ]
 export default class AddButtons extends React.PureComponent {
   constructor(props) {

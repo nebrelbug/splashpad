@@ -1,0 +1,46 @@
+.textEditWidget {
+  font-family: sans-serif;
+  border: 1px solid #aaa;
+  padding: 5px;
+  height: 100%;
+  overflow: auto;
+  overflow-x: hidden;
+  word-wrap: break-word;
+}
+
+.textEditWidget.editing {
+  border: 1px dashed #aaa;
+}
+
+.textEditWidget::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+}
+
+.textEditWidget::-webkit-scrollbar-thumb {
+  cursor: pointer;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.25);
+  -webkit-transition: color 0.2s ease;
+  transition: color 0.2s ease;
+}
+
+.textEditWidget::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 6px;
+}
+
+.textEditButton {
+  background-color: #fafafa;
+}
+
+.textEditButton:hover {
+  background-color: #9e9e9e; /* $md-grey-500 */
+}
+
+.textEditButton i {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  font-size: 14px !important;
+}

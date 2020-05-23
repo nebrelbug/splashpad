@@ -5,6 +5,7 @@ import AddButtons from './AddItem'
 import Clock from './widgets/Clock'
 import Note from './widgets/Note'
 import Search from './widgets/Search'
+import Text from './widgets/Text'
 
 import './Grid.scss'
 import 'react-grid-layout/css/styles.css'
@@ -60,6 +61,8 @@ function getComponent(type, uniqueKey) {
     return <Note uniqueKey={uniqueKey} />
   } else if (type === 'search') {
     return <Search />
+  } else if (type === 'text') {
+    return <Text uniqueKey={uniqueKey} />
   } else {
     return <span className='text'>UNKNOWN</span>
   }
