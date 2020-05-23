@@ -18,16 +18,20 @@ import ColorPicker from './ColorPicker'
 
 import BackgroundImageChooser from './FileUpload'
 
-import { getFromLS, saveToLS } from './localstorage'
+import {
+  getSplashSettings,
+  saveSplashSettings
+} from './browser-storage/splash-settings'
 
-const originalBackgroundColor = getFromLS('background-color') || '#fafafa'
+var originalBackgroundColor =
+  '#fafafa' || getSplashSettings('appearance', 'backgroundColor')
 
 function setBackgroundColor(color) {
   document.body.style.background = color
-  saveToLS('background-color', color)
+  saveSplashSettings('appearance', 'backgroundColor', color)
+  originalBackgroundColor = color
 }
 
-setBackgroundColor(originalBackgroundColor)
 export default class SimpleFullPageDialog extends Component {
   render() {
     const { visible, pageX, pageY } = this.props

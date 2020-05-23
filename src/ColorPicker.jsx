@@ -13,6 +13,7 @@ export default class ColorPicker extends Component {
 
   handleChangeComplete = (color) => {
     this.props.handleChangeComplete(color.hex)
+    this.setState({ color: color.hex })
   }
 
   render() {

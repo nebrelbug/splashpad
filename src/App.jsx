@@ -4,6 +4,8 @@ import Grid from './Grid'
 import Settings from './Settings'
 import inkContextTypes from 'react-md/lib/Inks/inkContextTypes'
 
+import './App.css'
+
 export default class App extends PureComponent {
   static childContextTypes = inkContextTypes
 
@@ -45,6 +47,7 @@ export default class App extends PureComponent {
           icon
           swapTheming
           onClick={this.toggleSettings}
+          className="actionButton"
         >
           {this.state.settingsOpen ? 'check' : 'settings'}
         </Button>

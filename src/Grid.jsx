@@ -10,7 +10,13 @@ import './Grid.scss'
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
 
-import { getFromLS, saveToLS } from './localstorage'
+import {
+  getWidgets,
+  getWidgetsSync,
+  saveWidgets,
+  saveWidgetCount
+} from './browser-storage/widgets'
+
 var Mousetrap = require('mousetrap')
 
 const ReactGridLayout = WidthProvider(RGL)
@@ -25,9 +31,9 @@ function Date() {
 
 const defaultItems = [
   // defaults
-  { i: '0', x: 0, y: 0, w: 2, h: 2, type: 'hi' },
-  { i: '1', x: 2, y: 0, w: 2, h: 2, type: 'hi' },
-  { i: '2', x: 4, y: 0, w: 2, h: 2, type: 'date' }
+  { i: 'widget-0', x: 0, y: 0, w: 4, h: 2, minH: 2, minW: 2, type: 'search' },
+  { i: 'widget-1', x: 2, y: 2, w: 3, h: 4, minH: 2, type: 'note' },
+  { i: 'widget-2', x: 4, y: 0, w: 2, h: 2, type: 'clock' }
 ]
 
 const itemTypeProps = {
@@ -42,10 +48,6 @@ const itemTypeProps = {
     w: 4
   }
 }
-
-const originalItems = getFromLS('items') || defaultItems
-
-const currentCount = getFromLS('currentCount') || 0
 
 function getComponent(type, uniqueKey) {
   if (type === 'hi') {
@@ -66,7 +68,7 @@ function getComponent(type, uniqueKey) {
 /**
  * This layout demonstrates how to use a grid with a dynamic number of elements.
  */
-export default class AddRemoveLayout extends React.Component {
+export default class WidgetGrid extends React.Component {
   static defaultProps = {
     className: 'layout',
     cols: 12,
@@ -77,10 +79,12 @@ export default class AddRemoveLayout extends React.Component {
   constructor(props) {
     super(props)
 
+    const { widgets, widgetCount } = getWidgetsSync()
+
     this.state = {
-      items: originalItems,
-      newCounter: currentCount,
-      editing: true
+      items: widgets || [],
+      widgetCount: widgetCount || false,
+      editing: false
     }
 
     this.onAddItem = this.onAddItem.bind(this)
@@ -91,6 +95,13 @@ export default class AddRemoveLayout extends React.Component {
   }
 
   componentDidMount() {
+    getWidgets().then(({ widgets, widgetCount }) => {
+      this.setState({
+        items: widgets || defaultItems,
+        widgetCount: widgetCount || 3 // widgetCount should be undefined, or a number greater than 2
+      })
+    })
+
     Mousetrap.bind('e', this.toggleEditing)
   }
 
@@ -117,7 +128,7 @@ export default class AddRemoveLayout extends React.Component {
         })
       },
       () => {
-        saveToLS('items', this.state.items)
+        saveWidgets(this.state.items)
       }
     )
   }
@@ -138,6 +149,9 @@ export default class AddRemoveLayout extends React.Component {
     // window.grid = grid
 
     function checkForSpace(x, y, width, height) {
+      if (x + width > 12) {
+        return false
+      }
       for (var col = x; col < x + width; col++) {
         for (var row = y; row < y + height; row++) {
           if (grid[col][row] === true) {
@@ -178,25 +192,7 @@ export default class AddRemoveLayout extends React.Component {
       >
         {this.state.editing && (
           <>
-            <Button
-              style={{
-                height: 18,
-                width: 18,
-                padding: 0,
-                zIndex: 999,
-                float: 'left',
-                position: 'absolute',
-                top: -8,
-                left: -8
-              }}
-              className='smallButton'
-              icon
-              onClick={() => {
-                this.onRemoveItem(ind)
-              }}
-            >
-              settings_applications
-            </Button>
+            <div style={{ position: 'absolute', left: '50%' }}></div>
             <Button
               style={{
                 height: 18,
@@ -229,7 +225,43 @@ export default class AddRemoveLayout extends React.Component {
               left: '0px'
             }}
             className='draggableOverlay'
-          />
+          >
+            <div
+              style={{
+                position: 'relative',
+                top: '0',
+                left: '0',
+                width: '100%',
+                height: '100%'
+              }}
+            >
+              <div
+                style={{
+                  margin: 0,
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)'
+                }}
+              >
+                <Button
+                  style={{
+                    zIndex: 999,
+                    position: 'relative',
+                    background: '#fafafa',
+                    color: 'black'
+                  }}
+                  className='editButton'
+                  icon
+                  onClick={() => {
+                    this.onRemoveItem(ind)
+                  }}
+                >
+                  settings
+                </Button>
+              </div>
+            </div>
+          </div>
         )}
       </div>
     )
@@ -240,7 +272,7 @@ export default class AddRemoveLayout extends React.Component {
     var itemConstraints = itemTypeProps[type] || {}
     // console.log('adding', 'n' + this.state.newCounter)
     var newItem = {
-      i: 'n' + this.state.newCounter,
+      i: 'widget-' + this.state.widgetCount,
       x: 0,
       y: 0, // puts it at the bottom
       w: 2,
@@ -257,10 +289,10 @@ export default class AddRemoveLayout extends React.Component {
         // Add a new item. It must have a unique key!
         items: this.state.items.concat(newItem),
         // Increment the counter to ensure key is always unique.
-        newCounter: this.state.newCounter + 1
+        widgetCount: this.state.widgetCount + 1
       },
       () => {
-        saveToLS('currentCount', this.state.newCounter)
+        saveWidgetCount(this.state.widgetCount)
       }
     )
   }
@@ -287,13 +319,17 @@ export default class AddRemoveLayout extends React.Component {
             isDraggable={this.state.editing}
             isResizable={this.state.editing}
             preventCollision={true}
+            draggableCancel='.editButton'
             // draggableHandle='.draggableOverlay'
             {...this.props}
           >
             {this.state.items.map((el, index) => this.createElement(el, index))}
           </ReactGridLayout>
         </div>
-        <AddButtons addItem={this.onAddItem} />
+        {this.state.widgetCount !== false && (
+          <AddButtons addItem={this.onAddItem} />
+        )}
+
         <Button
           style={{
             position: 'fixed',
@@ -304,9 +340,10 @@ export default class AddRemoveLayout extends React.Component {
             padding: 12
           }}
           icon
-          primary={this.state.editing}
+          // primary={this.state.editing}
           swapTheming
           onClick={this.toggleEditing}
+          className='actionButton'
         >
           {this.state.editing ? 'done' : 'edit'}
         </Button>

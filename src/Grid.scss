@@ -1,7 +1,3 @@
-.react-grid-layout {
-  /* background: #eee; */
-}
-
 .columns {
   -moz-columns: 120px;
   -webkit-columns: 120px;
@@ -66,4 +62,17 @@
 
 .draggableOverlay:hover {
   cursor: grab;
+}
+
+.draggableOverlay {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.editButton {
+  height: 48px;
+  width: 48px;
+  padding: 12px;
+}
+.editButton:hover {
+  background: #9e9e9e !important; // $md-grey-500
 }

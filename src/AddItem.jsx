@@ -99,6 +99,7 @@ export default class AddButtons extends React.PureComponent {
               onClick={() => {
                 this.props.addItem('note')
               }}
+              className='actionButton'
             >
               note_add
             </Button>
@@ -116,6 +117,7 @@ export default class AddButtons extends React.PureComponent {
             // secondary
             swapTheming
             onClick={this.show}
+            className='actionButton'
           >
             add_circle_outline
           </Button>

@@ -37,7 +37,7 @@ export default class Search extends Component {
 
     var query = this.state.value.replace(' ', '+')
     var url = 'https://www.google.com/search?q=' + query
-    window.location.replace(url)
+    window.location.href = url // this way it keeps the new tab page in the browser history
   }
 
   render() {
@@ -55,7 +55,12 @@ export default class Search extends Component {
           <Paper
             zDepth={2}
             className='papers__example'
-            style={{ padding: '6px', backgroundColor: 'white' }}
+            style={{
+              padding: '6px',
+              paddingRight: '28px',
+              backgroundColor: 'white',
+              borderRadius: '100px'
+            }}
           >
             <form onSubmit={this.handleSubmit}>
               <TextField
@@ -79,6 +84,7 @@ export default class Search extends Component {
                     search
                   </Button>
                 }
+                // error={true}
                 // rightIcon={
                 //   <Button
                 //     icon
