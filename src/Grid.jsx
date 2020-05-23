@@ -31,9 +31,9 @@ function Date() {
 
 const defaultItems = [
   // defaults
-  { i: 'widget-0', x: 0, y: 0, w: 4, h: 2, minH: 2, minW: 2, type: 'search' },
-  { i: 'widget-1', x: 2, y: 2, w: 3, h: 4, minH: 2, type: 'note' },
-  { i: 'widget-2', x: 4, y: 0, w: 2, h: 2, type: 'clock' }
+  { i: 'widget-0', x: 4, y: 0, w: 4, h: 2, minH: 2, minW: 2, type: 'search' },
+  { i: 'widget-2', x: 10, y: 0, w: 2, h: 2, type: 'clock' },
+  { i: 'widget-1', x: 0, y: 2, w: 3, h: 4, minH: 2, type: 'note' }
 ]
 
 const itemTypeProps = {
