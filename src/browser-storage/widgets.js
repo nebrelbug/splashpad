@@ -33,16 +33,16 @@ async function getWidgets() {
 }
 
 function getWidgetsSync() {
-  let widgets = {}
+  let widgets = []
   let widgetCount = {}
   if (global.localStorage) {
     try {
       widgets =
-        JSON.parse(global.localStorage.getItem('splash-widgets/widgets')) || {}
+        JSON.parse(global.localStorage.getItem('splash-widgets/widgets')) || []
       widgetCount =
         Number(
           global.localStorage.getItem('splash-widgets/current-widget-count')
-        ) || {}
+        ) || 3
     } catch (e) {
       /*Ignore*/
     }

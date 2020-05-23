@@ -81,6 +81,9 @@ export default class WidgetGrid extends React.Component {
 
     const { widgets, widgetCount } = getWidgetsSync()
 
+    console.log('widgets: ')
+    console.log(widgets)
+
     this.state = {
       items: widgets || [],
       widgetCount: widgetCount || false,
