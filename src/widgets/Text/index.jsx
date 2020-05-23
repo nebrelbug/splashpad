@@ -17,10 +17,12 @@ export default class Text extends Component {
       content: '',
       hovered: false,
       editing: false,
+      align: 'center',
       fontSizeIndex: 0
     }
 
     this.contentEditable = React.createRef()
+    this.containerDiv = React.createRef()
   }
 
   componentDidMount() {
@@ -28,7 +30,8 @@ export default class Text extends Component {
       if (widgetContent) {
         this.setState({
           content: widgetContent.content || '',
-          fontSizeIndex: widgetContent.fontSizeIndex || 0
+          fontSizeIndex: widgetContent.fontSizeIndex || 0,
+          align: widgetContent.align || 'center'
         })
       }
     })
@@ -61,6 +64,32 @@ export default class Text extends Component {
     )
   }
 
+  toggleTextAlign = () => {
+    var currentAlign = this.state.align
+    var newAlign = 'center'
+
+    if (currentAlign === 'left') {
+      newAlign = 'center' // unnecessary, but for readability
+    }
+    if (currentAlign === 'right') {
+      newAlign = 'left'
+    }
+    if (currentAlign === 'center') {
+      newAlign = 'right'
+    }
+
+    this.setState(
+      {
+        align: newAlign
+      },
+      () => {
+        saveWidgetContent(this.props.uniqueKey, {
+          align: newAlign
+        })
+      }
+    )
+  }
+
   render = () => {
     return (
       <div
@@ -76,11 +105,14 @@ export default class Text extends Component {
             this.contentEditable.current.focus()
           })
         }}
-        onBlur={() => {
-          this.setState({ editing: false })
+        ref={this.containerDiv}
+        onBlur={(e) => {
+          if (!this.containerDiv.current.contains(e.relatedTarget)) {
+            this.setState({ editing: false })
+          }
         }}
       >
-        {this.state.hovered && (
+        {this.state.editing && (
           <>
             <Button
               style={{
@@ -94,10 +126,25 @@ export default class Text extends Component {
               className='textEditButton'
               icon
               onClick={() => {
-                this.setState({ editing: !this.state.editing })
+                this.toggleFontSize()
               }}
             >
               format_size
+            </Button>
+            <Button
+              style={{
+                height: 18,
+                width: 18,
+                padding: 0,
+                position: 'absolute',
+                top: -2,
+                left: 18
+              }}
+              className='textEditButton'
+              icon
+              onClick={this.toggleTextAlign}
+            >
+              {'format_align_' + this.state.align}
             </Button>
           </>
         )}
@@ -107,7 +154,10 @@ export default class Text extends Component {
           disabled={!this.state.editing} // use true to disable edition
           onChange={this.handleChange} // handle innerHTML change
           className={'textEditWidget ' + (this.state.editing ? 'editing' : '')}
-          style={{ fontSize: fontSizes[this.state.fontSizeIndex] }}
+          style={{
+            fontSize: fontSizes[this.state.fontSizeIndex],
+            textAlign: this.state.align
+          }}
         />
       </div>
     )
