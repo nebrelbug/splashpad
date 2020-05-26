@@ -27,6 +27,10 @@
   /* IE6-9 fallback on horizontal gradient */
 }
 
+.postit > div {
+  padding: 10px;
+}
+
 .postit:after {
   content: '';
   position: absolute;

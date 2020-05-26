@@ -1,0 +1,19 @@
+#splash-settings-dialog {
+}
+
+#splash-settings-dialog section {
+  padding: 0;
+}
+
+#splash-settings-dialog > section > section > ul {
+  overflow-x: hidden;
+}
+
+.react-swipeable-view-container > div {
+  padding: 6px;
+  -ms-overflow-style: none;
+}
+
+.react-swipeable-view-container > div::-webkit-scrollbar {
+  display: none;
+}

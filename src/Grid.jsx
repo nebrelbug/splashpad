@@ -115,7 +115,7 @@ export default class WidgetGrid extends React.Component {
       items: widgets || [],
       widgetCount: widgetCount || false,
       editing: false,
-      widgetSettings: 'widget-4'
+      widgetSettings: false // 'widget-4'
     }
 
     // this.resetLayout = this.resetLayout.bind(this)
@@ -352,7 +352,7 @@ export default class WidgetGrid extends React.Component {
   render() {
     console.log(this.state.items)
     return (
-      <div>
+      <>
         <div>
           <ReactGridLayout
             onLayoutChange={this.onLayoutChange}
@@ -363,8 +363,18 @@ export default class WidgetGrid extends React.Component {
             isResizable={this.state.editing}
             preventCollision={true}
             draggableCancel='.editButton'
-            // draggableHandle='.draggableOverlay'
+            // TODO: this doesn't work...
+            onClick={(e) => {
+              console.log('clicked')
+              console.log(e.currentTarget)
+              console.log(e.target)
+              if (this.state.editing && e.target === e.currentTarget) {
+                this.setState({ editing: false })
+              }
+            }}
             {...this.props}
+
+            // draggableHandle='.draggableOverlay'
           >
             {this.state.items.map((el, index) => this.createElement(el, index))}
           </ReactGridLayout>
@@ -390,7 +400,7 @@ export default class WidgetGrid extends React.Component {
         >
           {this.state.editing ? 'done' : 'edit'}
         </Button>
-      </div>
+      </>
     )
   }
 }

@@ -5,3 +5,7 @@
 .actionButton:hover {
   background-color: #9e9e9e; /* $md-grey-500 */
 }
+
+#splashpad-main-drawer {
+  max-width: 240px;
+}

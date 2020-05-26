@@ -14,17 +14,19 @@ import {
   TabsContainer
 } from 'react-md'
 
-import ColorPicker from './ColorPicker'
+import ColorPicker from '../ColorPicker'
 
-import BackgroundImageChooser from './FileUpload'
+import BackgroundImageChooser from '../FileUpload'
 
 import {
   getSplashSettings,
   saveSplashSettings
-} from './browser-storage/splash-settings'
+} from '../browser-storage/splash-settings'
+
+import './settings.css'
 
 var originalBackgroundColor =
-  '#fafafa' || getSplashSettings('appearance', 'backgroundColor')
+  getSplashSettings('appearance', 'backgroundColor') || '#fafafa'
 
 function setBackgroundColor(color) {
   document.body.style.background = color
@@ -56,15 +58,18 @@ export default class SimpleFullPageDialog extends Component {
 
     return (
       <DialogContainer
-        id='simple-full-page-dialog'
+        id='splash-settings-dialog'
         visible={visible}
-        pageX={pageX}
-        pageY={pageY}
-        fullPage
+        // pageX={pageX}
+        // pageY={pageY}
+        // fullPage
         onHide={this.props.onHide}
         transitionEnterTimeout={10}
         transitionLeaveTimeout={10}
         aria-labelledby='simple-full-page-dialog-title'
+        height='80%'
+        width='80%'
+        className='settings-dialog'
       >
         {/* 
         <section className='md-toolbar-relative'>
@@ -75,12 +80,12 @@ export default class SimpleFullPageDialog extends Component {
           // panelClassName='md-grid'
           colored
           primary
-          toolbar={TheToolbar}
+          // toolbar={TheToolbar}
         >
           <Tabs tabId='simple-tab'>
             <Tab label='Appearance'>
               <Grid className='grid-example'>
-                <Cell size={2}>
+                <Cell size={4}>
                   {' '}
                   <SelectionControlGroup
                     id='selection-control-group-radios'
@@ -113,6 +118,21 @@ export default class SimpleFullPageDialog extends Component {
               {/* <BackgroundImageChooser /> */}
             </Tab>
             <Tab label='Miscellaneous'>
+              <h3>Now look at me!</h3>
+            </Tab>
+            <Tab label='About'>
+              <h3>Now look at me!</h3>
+              <a href='https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=48CUT8BYGFRAQ&item_name=Help+fund+my+development+of+Splashpad%21&currency_code=USD&source=url' />
+              <Button
+                raised
+                secondary
+                iconBefore={false}
+                iconClassName='fa fa-hand-paper-o'
+              >
+                Paper
+              </Button>
+            </Tab>
+            <Tab label='Support'>
               <h3>Now look at me!</h3>
             </Tab>
           </Tabs>

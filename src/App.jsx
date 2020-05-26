@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react'
-import { Button, Drawer } from 'react-md'
+import { Button, Drawer, NavigationDrawer, Toolbar } from 'react-md'
 import Grid from './Grid'
-import Settings from './Settings'
+import Settings from './Settings/index.jsx'
 import inkContextTypes from 'react-md/lib/Inks/inkContextTypes'
-
+import inboxListItems from './constants/inboxListItems'
 import './App.css'
 
 export default class App extends PureComponent {
@@ -50,11 +50,20 @@ export default class App extends PureComponent {
           {this.state.settingsOpen ? 'check' : 'settings'}
         </Button>
         {/* <Drawer
-          id='simple-drawer-example'
-          type={Drawer.DrawerTypes.TEMPORARY_MINI}
-          visible={true}
+          id='splashpad-main-drawer'
+          type={Drawer.DrawerTypes.TEMPORARY}
+          visible={this.state.drawerOpen}
           position='left'
           navItems={inboxListItems}
+          drawerTitle='Splashpad'
+          header={
+            <Toolbar
+              nav={null}
+              actions={null}
+              className='md-divider-border md-divider-border--bottom'
+              title='Splashpad'
+            />
+          }
         /> */}
         <Grid />
       </div>

@@ -45,7 +45,7 @@ export default class Note extends Component {
         <div className='postit'>
           <div
             className='md-text-field-container md-full-width md-text-field-container--input'
-            style={{ width: '100%', height: '100%', padding: '4%' }}
+            style={{ width: '100%', height: '100%', padding: '10px' }}
           >
             <input
               // id='placeholder-only-title'

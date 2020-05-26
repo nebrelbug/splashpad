@@ -22,6 +22,7 @@ export default class ColorPicker extends Component {
         color={this.state.color}
         onChange={this.handleChange}
         onChangeComplete={this.handleChangeComplete}
+        disableAlpha={true}
         presetColors={[
           '#fafafa', // $md-grey-50
           '#ffcdd2', // $md-red-100,
