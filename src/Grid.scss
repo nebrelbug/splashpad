@@ -1,3 +1,6 @@
+@import '~react-md/src/scss/react-md';
+@import 'globals';
+
 .columns {
   -moz-columns: 120px;
   -webkit-columns: 120px;
@@ -56,12 +59,59 @@
   padding: 10px;
 }
 
-.smallButton i {
+.smallButton > i {
+  font-size: 14px !important;
+  margin: auto;
+  display: block;
+  color: #fafafa !important;
+  // margin-left: 0.5px;
+  font-weight: bold;
+}
+
+.smallButton {
+  background-color: rgba(0, 0, 0, 0.54);
+}
+
+.settingsButton {
+  height: 34px;
+  width: 34px;
+  padding: 8px;
+  z-index: 999;
+  position: relative;
+  background: #fafafa;
+  color: black;
+}
+
+.settingsButton.md-background--primary {
+  background: $md-primary-color; // $md-light-blue-500 (primary)
+  color: #fff;
+}
+
+.settingsButton.md-background--primary:hover {
+  background: $md-light-blue-300 !important;
+}
+
+.settingsButton.md-background--secondary {
+  background: $md-secondary-color; // $md-deep-orange-a-200
+  color: #fff;
+}
+
+.settingsButton.md-background--secondary:hover {
+  background: $md-deep-orange-a-100 !important;
+}
+
+.settingsButton > i {
+  display: block;
   font-size: 18px !important;
+  margin-top: 0.5px;
 }
 
 .draggableOverlay:hover {
   cursor: grab;
+}
+
+.static .draggableOverlay:hover {
+  cursor: default;
 }
 
 .draggableOverlay {
@@ -73,6 +123,7 @@
   width: 48px;
   padding: 12px;
 }
-.editButton:hover {
+.editButton:hover,
+.settingsButton:hover {
   background: #9e9e9e !important; // $md-grey-500
 }

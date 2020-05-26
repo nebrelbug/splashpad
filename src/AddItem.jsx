@@ -27,7 +27,7 @@ export default class AddButtons extends React.PureComponent {
     super(props)
 
     this.state = {
-      visible: true,
+      visible: false,
       addButtonHovered: false
     }
 

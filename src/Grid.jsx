@@ -20,6 +20,10 @@ import {
 
 import widgets, { fallbackWidget } from './widgets/widgets-list'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+import { faThumbtack } from '@fortawesome/free-solid-svg-icons/faThumbtack'
+
 var Mousetrap = require('mousetrap')
 
 const ReactGridLayout = WidthProvider(RGL)
@@ -44,13 +48,13 @@ export default class WidgetGrid extends React.Component {
 
     const { widgets, widgetCount } = getWidgetsSync()
 
-    console.log('widgets: ')
-    console.log(widgets)
+    // console.log('widgets: ')
+    // console.log(widgets)
 
     this.state = {
       items: widgets || [],
       widgetCount: widgetCount || false,
-      editing: false,
+      editing: true,
       widgetSettings: false // 'widget-4'
     }
 
@@ -84,7 +88,7 @@ export default class WidgetGrid extends React.Component {
     this.setState({ widgetSettings: false })
   }
 
-  onLayoutChange = (layout) => {
+  onLayoutChange = (layout, otherlayouts) => {
     // this.props.onLayoutChange(layout)
     // console.log('layout: ')
     // console.log(layout)
@@ -102,6 +106,16 @@ export default class WidgetGrid extends React.Component {
         saveWidgets(this.state.items)
       }
     )
+  }
+
+  toggleItemStatic = (index) => {
+    // see https://stackoverflow.com/a/49502115/7983596
+    let items = this.state.items.map((item, i) => ({
+      ...item,
+      static: i === index ? !item.static : item.static // if correct element, toggle item.static
+    }))
+
+    this.onLayoutChange(items)
   }
 
   findPositionForItem = (newItem) => {
@@ -153,9 +167,9 @@ export default class WidgetGrid extends React.Component {
 
   createElement(el, ind) {
     const key = el.i
-    console.log(
-      `this.state.widgetSettings = ${this.state.widgetSettings}, key = ${key}`
-    )
+    // console.log(
+    //   `this.state.widgetSettings = ${this.state.widgetSettings}, key = ${key}`
+    // )
 
     var widget = widgets[el.type] || fallbackWidget
 
@@ -164,14 +178,13 @@ export default class WidgetGrid extends React.Component {
     return (
       <div
         key={key}
-        data-grid={el}
         style={{
           background: this.state.editing ? 'rgba(200, 200, 200, 0.5)' : 'none'
         }}
       >
         {this.state.editing && (
           <>
-            <div style={{ position: 'absolute', left: '50%' }}></div>
+            {/* <div style={{ position: 'absolute', left: '50%' }}></div> */}
             <Button
               style={{
                 height: 18,
@@ -189,7 +202,7 @@ export default class WidgetGrid extends React.Component {
                 this.onRemoveItem(ind)
               }}
             >
-              cancel
+              close
             </Button>
           </>
         )}
@@ -211,43 +224,58 @@ export default class WidgetGrid extends React.Component {
             }}
             className='draggableOverlay'
           >
-            {widget.settingsComponent && (
+            <div
+              style={{
+                position: 'relative',
+                top: '0',
+                left: '0',
+                width: '100%',
+                height: '100%'
+              }}
+            >
               <div
                 style={{
-                  position: 'relative',
-                  top: '0',
-                  left: '0',
-                  width: '100%',
-                  height: '100%'
+                  margin: 0,
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: '100%'
                 }}
               >
-                <div
-                  style={{
-                    margin: 0,
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)'
-                  }}
-                >
+                <div style={{ width: 'fit-content', margin: 'auto' }}>
                   <Button
                     style={{
-                      zIndex: 999,
-                      position: 'relative',
-                      background: '#fafafa',
-                      color: 'black'
+                      paddingTop: '10px'
                     }}
-                    className='editButton'
+                    className='settingsButton'
+                    secondary={!!el.static}
+                    swapTheming={!!el.static}
                     icon
+                    iconEl={<FontAwesomeIcon icon={faThumbtack} />}
                     onClick={() => {
-                      this.showWidgetSettings(key)
+                      this.toggleItemStatic(ind)
                     }}
                   >
-                    settings
+                    pin widget to grid
                   </Button>
+                  {widget.settingsComponent && (
+                    <Button
+                      style={{
+                        marginLeft: '8px'
+                      }}
+                      className='settingsButton'
+                      icon
+                      onClick={() => {
+                        this.showWidgetSettings(key)
+                      }}
+                    >
+                      settings
+                    </Button>
+                  )}
                 </div>
               </div>
-            )}
+            </div>
           </div>
         )}
       </div>
@@ -294,28 +322,30 @@ export default class WidgetGrid extends React.Component {
   }
 
   render() {
+    console.log('Rendering...')
     console.log(this.state.items)
     return (
       <>
         <div>
           <ReactGridLayout
             onLayoutChange={this.onLayoutChange}
+            layout={this.state.items}
             onBreakpointChange={this.onBreakpointChange}
             measureBeforeMount={true}
             useCSSTransforms={true}
-            isDraggable={this.state.editing && !this.state.widgetSettings}
+            isDraggable={this.state.editing && !this.state.widgetSettings} // this makes sure it doesn't resize when widget settings are in the foreground
             isResizable={this.state.editing}
             preventCollision={true}
             draggableCancel='.editButton'
             // TODO: this doesn't work...
-            onClick={(e) => {
-              console.log('clicked')
-              console.log(e.currentTarget)
-              console.log(e.target)
-              if (this.state.editing && e.target === e.currentTarget) {
-                this.setState({ editing: false })
-              }
-            }}
+            // onClick={(e) => {
+            //   console.log('clicked')
+            //   console.log(e.currentTarget)
+            //   console.log(e.target)
+            //   if (this.state.editing && e.target === e.currentTarget) {
+            //     this.setState({ editing: false })
+            //   }
+            // }}
             {...this.props}
 
             // draggableHandle='.draggableOverlay'
