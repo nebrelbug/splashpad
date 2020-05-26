@@ -9,6 +9,10 @@
   overflow-x: hidden;
 }
 
+#splash-settings-dialog > section > section > ul > li {
+  padding-bottom: 16px; /* 14px + 2px underline */
+}
+
 .react-swipeable-view-container > div {
   padding: 6px;
   -ms-overflow-style: none;

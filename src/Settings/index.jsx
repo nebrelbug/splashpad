@@ -11,10 +11,16 @@ import {
   Tabs,
   SelectionControlGroup,
   Tab,
-  TabsContainer
+  TabsContainer,
+  SVGIcon
 } from 'react-md'
 
 import ColorPicker from '../ColorPicker'
+
+// import paypalIcon from '../assets/icons/paypal-font-awesome-icon.svg'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+import { faPaypal } from '@fortawesome/free-brands-svg-icons/faPaypal'
 
 import BackgroundImageChooser from '../FileUpload'
 
@@ -38,23 +44,23 @@ export default class SimpleFullPageDialog extends Component {
   render() {
     const { visible, pageX, pageY } = this.props
 
-    const TheToolbar = (
-      <Toolbar
-        // fixed
-        title='Settings'
-        titleId='simple-full-page-dialog-title'
-        // nav={
-        //   <Button icon onClick={this.props.onHide}>
-        //     close
-        //   </Button>
-        // }
-        actions={
-          <Button flat onClick={this.props.onHide}>
-            Save
-          </Button>
-        }
-      />
-    )
+    // const TheToolbar = (
+    //   <Toolbar
+    //     // fixed
+    //     title='Settings'
+    //     titleId='simple-full-page-dialog-title'
+    //     // nav={
+    //     //   <Button icon onClick={this.props.onHide}>
+    //     //     close
+    //     //   </Button>
+    //     // }
+    //     actions={
+    //       <Button flat onClick={this.props.onHide}>
+    //         Save
+    //       </Button>
+    //     }
+    //   />
+    // )
 
     return (
       <DialogContainer
@@ -122,14 +128,17 @@ export default class SimpleFullPageDialog extends Component {
             </Tab>
             <Tab label='About'>
               <h3>Now look at me!</h3>
-              <a href='https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=48CUT8BYGFRAQ&item_name=Help+fund+my+development+of+Splashpad%21&currency_code=USD&source=url' />
+
               <Button
                 raised
-                secondary
-                iconBefore={false}
-                iconClassName='fa fa-hand-paper-o'
+                primary
+                iconEl={<FontAwesomeIcon icon={faPaypal} />}
+                href={
+                  'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=48CUT8BYGFRAQ&item_name=Help+fund+my+development+of+Splashpad%21&currency_code=USD&source=url'
+                }
+                style={{ height: '36px', marginBottom: '6px' }}
               >
-                Paper
+                Donate!
               </Button>
             </Tab>
             <Tab label='Support'>

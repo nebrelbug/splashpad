@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react'
-import { Button, Drawer, NavigationDrawer, Toolbar } from 'react-md'
+import { Button } from 'react-md'
 import Grid from './Grid'
 import Settings from './Settings/index.jsx'
 import inkContextTypes from 'react-md/lib/Inks/inkContextTypes'
-import inboxListItems from './constants/inboxListItems'
 import './App.css'
 
 export default class App extends PureComponent {

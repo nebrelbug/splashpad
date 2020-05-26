@@ -1,0 +1,2 @@
+- Add open-source credits, licenses
+  - Ex. Font Awesome PayPal icon

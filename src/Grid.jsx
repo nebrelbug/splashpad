@@ -18,13 +18,11 @@ import {
   saveWidgetCount
 } from './browser-storage/widgets'
 
+import widgets, { fallbackWidget } from './widgets/widgets-list'
+
 var Mousetrap = require('mousetrap')
 
 const ReactGridLayout = WidthProvider(RGL)
-
-function Date() {
-  return <span className='text'>{'05-22-33'}</span>
-}
 
 const defaultItems = [
   // defaults
@@ -33,68 +31,6 @@ const defaultItems = [
   { i: 'widget-1', x: 0, y: 2, w: 3, h: 4, minH: 2, type: 'note' }
 ]
 
-const itemTypeProps = {
-  note: {
-    minH: 2,
-    w: 3,
-    h: 4
-  },
-  search: {
-    minH: 2,
-    minW: 2,
-    w: 4
-  }
-}
-
-function getComponent(type, uniqueKey, widgetSettings, hideSettings) {
-  if (type === 'date') {
-    return (
-      <Date
-        uniqueKey={uniqueKey}
-        settingsVisible={widgetSettings === uniqueKey}
-        hideSettings={hideSettings}
-      />
-    )
-  } else if (type === 'clock') {
-    return (
-      <Clock
-        uniqueKey={uniqueKey}
-        settingsVisible={widgetSettings === uniqueKey}
-        hideSettings={hideSettings}
-      />
-    )
-  } else if (type === 'note') {
-    return (
-      <Note
-        uniqueKey={uniqueKey}
-        settingsVisible={widgetSettings === uniqueKey}
-        hideSettings={hideSettings}
-      />
-    )
-  } else if (type === 'search') {
-    return (
-      <Search
-        uniqueKey={uniqueKey}
-        settingsVisible={widgetSettings === uniqueKey}
-        hideSettings={hideSettings}
-      />
-    )
-  } else if (type === 'text') {
-    return (
-      <Text
-        uniqueKey={uniqueKey}
-        settingsVisible={widgetSettings === uniqueKey}
-        hideSettings={hideSettings}
-      />
-    )
-  } else {
-    return <span className='text'>UNKNOWN</span>
-  }
-}
-
-/**
- * This layout demonstrates how to use a grid with a dynamic number of elements.
- */
 export default class WidgetGrid extends React.Component {
   static defaultProps = {
     className: 'layout',
@@ -220,6 +156,11 @@ export default class WidgetGrid extends React.Component {
     console.log(
       `this.state.widgetSettings = ${this.state.widgetSettings}, key = ${key}`
     )
+
+    var widget = widgets[el.type] || fallbackWidget
+
+    var WidgetComponent = widget.component
+
     return (
       <div
         key={key}
@@ -252,12 +193,13 @@ export default class WidgetGrid extends React.Component {
             </Button>
           </>
         )}
-        {getComponent(
-          el.type,
-          key,
-          this.state.widgetSettings,
-          this.hideWidgetSettings
-        )}
+        <WidgetComponent
+          uniqueKey={key}
+          settingsVisible={this.state.widgetSettings === key}
+          hideSettings={this.hideWidgetSettings}
+          editingGrid={this.state.editing}
+        />
+
         {this.state.editing && (
           <div
             style={{
@@ -269,41 +211,43 @@ export default class WidgetGrid extends React.Component {
             }}
             className='draggableOverlay'
           >
-            <div
-              style={{
-                position: 'relative',
-                top: '0',
-                left: '0',
-                width: '100%',
-                height: '100%'
-              }}
-            >
+            {widget.settingsComponent && (
               <div
                 style={{
-                  margin: 0,
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)'
+                  position: 'relative',
+                  top: '0',
+                  left: '0',
+                  width: '100%',
+                  height: '100%'
                 }}
               >
-                <Button
+                <div
                   style={{
-                    zIndex: 999,
-                    position: 'relative',
-                    background: '#fafafa',
-                    color: 'black'
-                  }}
-                  className='editButton'
-                  icon
-                  onClick={() => {
-                    this.showWidgetSettings(key)
+                    margin: 0,
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)'
                   }}
                 >
-                  settings
-                </Button>
+                  <Button
+                    style={{
+                      zIndex: 999,
+                      position: 'relative',
+                      background: '#fafafa',
+                      color: 'black'
+                    }}
+                    className='editButton'
+                    icon
+                    onClick={() => {
+                      this.showWidgetSettings(key)
+                    }}
+                  >
+                    settings
+                  </Button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         )}
       </div>
@@ -312,7 +256,7 @@ export default class WidgetGrid extends React.Component {
 
   onAddItem = (type) => {
     /*eslint no-console: 0*/
-    var itemConstraints = itemTypeProps[type] || {}
+    var itemConstraints = widgets[type].gridSettings || {}
     // console.log('adding', 'n' + this.state.newCounter)
     var newItem = {
       i: 'widget-' + this.state.widgetCount,

@@ -7,25 +7,27 @@ import {
   ListItem,
   Subheader,
   Divider,
+  Grid,
+  Cell,
   Avatar
 } from 'react-md'
+import widgets from './widgets/widgets-list'
 
 var Mousetrap = require('mousetrap')
 
 const InfoIcon = () => <FontIcon>info</FontIcon>
 
-var itemsToAdd = [
-  { name: 'Sticky Note', key: 'note', icon: 'note', color: 'amber' },
-  { name: 'Searchbar', key: 'search', icon: 'search' },
-  { name: 'Clock', key: 'clock', icon: 'schedule' },
-  { name: 'Text', key: 'text', icon: 'text_fields' }
-]
+let widgetList = Object.keys(widgets).map((key) => ({
+  ...widgets[key],
+  key: key
+}))
+
 export default class AddButtons extends React.PureComponent {
   constructor(props) {
     super(props)
 
     this.state = {
-      visible: false,
+      visible: true,
       addButtonHovered: false
     }
 
@@ -128,28 +130,32 @@ export default class AddButtons extends React.PureComponent {
           visible={this.state.visible}
           title='Add Widget'
           onHide={this.hide}
+          // width='40%'
         >
+          {/* Consider adding search, larger dialog */}
           <List className=''>
             {/* <Subheader primaryText='Folders' /> */}
-            {itemsToAdd.map(({ name, key, icon, color }, i) => (
-              <ListItem
-                leftAvatar={
-                  <Avatar
-                    suffix={color}
-                    icon={<FontIcon>{icon}</FontIcon>}
-                    random
-                  />
-                }
-                onClick={() => {
-                  this.hide()
-                  this.props.addItem(key)
-                }}
-                // rightIcon={<InfoIcon />}
-                primaryText={name}
-                // secondaryText='Jan 9, 2014'
-                key={i}
-              />
-            ))}
+            {widgetList.map(
+              ({ name, description, key, icon, color }, i) => (
+                <ListItem
+                  leftAvatar={
+                    <Avatar
+                      suffix={color}
+                      icon={<FontIcon>{icon}</FontIcon>}
+                      random
+                    />
+                  }
+                  onClick={() => {
+                    this.hide()
+                    this.props.addItem(key)
+                  }}
+                  // rightIcon={<InfoIcon />}
+                  primaryText={name}
+                  secondaryText={description}
+                  key={i}
+                />
+              )
+            )}
           </List>
         </DialogContainer>
       </>
