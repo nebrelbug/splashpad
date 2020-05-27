@@ -18,6 +18,8 @@ export default class App extends PureComponent {
     this.state = {
       settingsOpen: false
     }
+
+    this.divRef = React.createRef()
   }
 
   toggleSettings = () => {
@@ -26,7 +28,7 @@ export default class App extends PureComponent {
 
   render() {
     return (
-      <div>
+      <div ref={this.divRef}>
         <Settings
           visible={this.state.settingsOpen}
           onHide={this.toggleSettings}

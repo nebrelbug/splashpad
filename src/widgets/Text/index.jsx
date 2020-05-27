@@ -264,6 +264,8 @@ export default class Text extends Component {
           lastChild={true}
           // disableScrollLocking={true}
           renderNode={document.getElementById('dialog-container')} // or whatever render node you want
+          transitionEnterTimeout={50}
+          transitionLeaveTimeout={50}
         >
           <SelectionControl
             type='switch'

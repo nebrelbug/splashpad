@@ -27,7 +27,7 @@ import {
   saveSplashSettings
 } from '../browser-storage/splash-settings'
 
-import './settings.css'
+import './settings.scss'
 
 export default class SimpleFullPageDialog extends Component {
   render() {

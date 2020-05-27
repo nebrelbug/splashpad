@@ -1,0 +1,40 @@
+#splash-settings-dialog > section {
+  padding: 0px;
+}
+
+#splash-settings-dialog > section > section {
+  padding-top: 48px;
+}
+
+#splash-settings-dialog > section > section > ul {
+  padding-left: 0px !important;
+  position: fixed;
+  margin-top: -48px;
+  width: 100%;
+}
+
+#splash-settings-dialog > section > section > ul > li {
+  padding-top: 17px;
+  padding-bottom: 17px;
+}
+
+#splash-settings-dialog > section > section > div {
+  height: 100%;
+  overflow: hidden;
+}
+
+#splash-settings-dialog
+  > section
+  > section
+  > div
+  .react-swipeable-view-container {
+  height: calc(485px - 48px);
+  //   overflow-x: auto;
+}
+
+#splash-settings-dialog > section > section > div > div > div {
+  // the containers for each tab's content
+  overflow-y: hidden;
+  padding: 12px;
+  height: 100% !important;
+}

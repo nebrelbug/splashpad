@@ -10,8 +10,6 @@ import {
   saveSplashSettings
 } from '../browser-storage/splash-settings'
 
-import './settings.css'
-
 var backgroundColor =
   getSplashSettings('appearance', 'backgroundColor') || '#fafafa'
 
