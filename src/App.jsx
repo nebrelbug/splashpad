@@ -18,8 +18,6 @@ export default class App extends PureComponent {
     this.state = {
       settingsOpen: false
     }
-
-    this.divRef = React.createRef()
   }
 
   toggleSettings = () => {

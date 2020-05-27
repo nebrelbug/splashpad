@@ -7,16 +7,10 @@ import {
 } from '../../browser-storage/widget-content'
 
 import ContentEditable from 'react-contenteditable'
-import { TwitterPicker } from 'react-color'
 
-import {
-  Button,
-  FontIcon,
-  DialogContainer,
-  SelectionControl,
-  SelectField,
-  Slider
-} from 'react-md'
+import { Button } from 'react-md'
+
+import TextWidgetSettings from '../TextWidgetSettings'
 
 import './text.css'
 
@@ -27,13 +21,13 @@ export default class Text extends Component {
     super()
     this.state = {
       content: '',
-      hovered: false,
+      // hovered: false,
       editing: false,
       settings: {
         align: 'center',
         fontSize: 14,
         border: false,
-        textColor: 'black'
+        textColor: '#000'
       }
     }
 
@@ -50,7 +44,7 @@ export default class Text extends Component {
         this.setState({
           content: widgetContent.content || '',
           settings: {
-            fontSize: settings.fontSize || 0,
+            fontSize: settings.fontSize || 14,
             align: settings.align || 'center',
             border: settings.border || false, // false is default
             textColor: settings.textColor || '#000'
@@ -66,25 +60,25 @@ export default class Text extends Component {
     })
   }
 
-  mouseOver = () => {
-    this.setState({ hovered: true })
-  }
+  // mouseOver = () => {
+  //   this.setState({ hovered: true })
+  // }
 
-  mouseOut = () => {
-    this.setState({ hovered: false })
-  }
+  // mouseOut = () => {
+  //   this.setState({ hovered: false })
+  // }
 
-  setFontSize = (newFontSize) => {
+  onSettingsChange = (key, newValue) => {
     this.setState(
       {
         settings: {
           ...this.state.settings,
-          fontSize: newFontSize
+          [key]: newValue
         }
       },
       () => {
         saveWidgetSettings(this.props.uniqueKey, {
-          fontSize: this.state.settings.fontSize
+          [key]: newValue
         })
       }
     )
@@ -110,23 +104,7 @@ export default class Text extends Component {
 
     console.log(`fontSize was ${oldFontSize} and is now ${newFontSize}`)
 
-    this.setFontSize(newFontSize)
-  }
-
-  setTextAlign = (newAlign) => {
-    this.setState(
-      {
-        settings: {
-          ...this.state.settings,
-          align: newAlign
-        }
-      },
-      () => {
-        saveWidgetSettings(this.props.uniqueKey, {
-          align: newAlign
-        })
-      }
-    )
+    this.onSettingsChange('fontSize', newFontSize)
   }
 
   toggleTextAlign = () => {
@@ -143,40 +121,7 @@ export default class Text extends Component {
       newAlign = 'right'
     }
 
-    this.setTextAlign(newAlign)
-  }
-
-  toggleBorder = () => {
-    // console.log(`showBorder is ${showBorder}`)
-    this.setState(
-      {
-        settings: {
-          ...this.state.settings,
-          border: !this.state.settings.border
-        }
-      },
-      () => {
-        saveWidgetSettings(this.props.uniqueKey, {
-          border: this.state.settings.border
-        })
-      }
-    )
-  }
-
-  setTextColor = (newColor) => {
-    this.setState(
-      {
-        settings: {
-          ...this.state.settings,
-          textColor: newColor.hex
-        }
-      },
-      () => {
-        saveWidgetSettings(this.props.uniqueKey, {
-          textColor: newColor.hex
-        })
-      }
-    )
+    this.onSettingsChange('align', newAlign)
   }
 
   render = () => {
@@ -190,8 +135,8 @@ export default class Text extends Component {
             width: '100%',
             height: '100%'
           }}
-          onMouseEnter={this.mouseOver}
-          onMouseLeave={this.mouseOut}
+          // onMouseEnter={this.mouseOver}
+          // onMouseLeave={this.mouseOut}
           onDoubleClick={() => {
             this.setState({ editing: true }, () => {
               this.contentEditable.current.focus()
@@ -246,7 +191,7 @@ export default class Text extends Component {
             className={
               'textEditWidget ' +
               (this.state.editing ? 'editing' : '') +
-              (this.state.settings.border ? 'bordered' : '')
+              (this.state.settings.border ? 'splash-widget-bordered' : '')
             }
             style={{
               fontSize: widgetSettings.fontSize + 'px',
@@ -255,78 +200,13 @@ export default class Text extends Component {
             }}
           />
         </div>
-        <DialogContainer
-          id='widget-settings-dialog'
+
+        <TextWidgetSettings
           visible={this.props.settingsVisible}
-          title='Widget Settings'
           onHide={this.props.hideSettings}
-          portal={true}
-          lastChild={true}
-          // disableScrollLocking={true}
-          renderNode={document.getElementById('dialog-container')} // or whatever render node you want
-          transitionEnterTimeout={50}
-          transitionLeaveTimeout={50}
-        >
-          <SelectionControl
-            type='switch'
-            label='Show Border'
-            name='show-border'
-            checked={this.state.settings.border}
-            onClick={this.toggleBorder}
-          />
-          <SelectField
-            id='select-field-2'
-            label='Align'
-            // placeholder='Center'
-            className='md-cell'
-            menuItems={[
-              {
-                label: 'Left',
-                value: 'left'
-              },
-              {
-                label: 'Center',
-                value: 'center'
-              },
-              {
-                label: 'Right',
-                value: 'right'
-              }
-            ]}
-            simplifiedMenu={false}
-            value={this.state.settings.align}
-            onChange={this.setTextAlign}
-          />
-          <Slider
-            // label='Discrete with ticks and precision'
-            // discrete
-            min={6}
-            max={48}
-            step={2}
-            // discreteTicks={0.25}
-            valuePrecision={2}
-            style={{ marginTop: '10px' }}
-            leftIcon={<FontIcon>format_size</FontIcon>}
-            value={this.state.settings.fontSize}
-            onChange={this.setFontSize}
-            editable
-          />
-          <br />
-          <TwitterPicker
-            triangle={'hide'}
-            width='100%'
-            colors={[
-              '#000',
-              '#fff',
-              '#9e9e9e', // $md-grey-500
-              '#03a9f4', // $md-light-blue-500
-              '#f44336' // $md-red-500
-              // '#ff6e40' // $md-deep-orange-a-200
-            ]}
-            color={this.state.settings.textColor}
-            onChangeComplete={this.setTextColor}
-          />
-        </DialogContainer>
+          settings={widgetSettings}
+          onSettingsChange={this.onSettingsChange}
+        />
       </>
     )
   }
