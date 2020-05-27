@@ -25,6 +25,18 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>React App</title>
+    <style>
+      html {
+        height: 100%;
+      }
+      body {
+        background-position: center !important; /* Center the image */
+        background-repeat: no-repeat !important; /* Do not repeat the image */
+        background-size: cover !important; /* Resize the background image to cover the entire container */
+        min-height: 100%;
+        margin: 0px;
+      }
+    </style>
   </head>
   <body>
     <script>
@@ -40,8 +52,19 @@
         }
       }
 
-      if (lsAppearance.backgroundColor) {
+      if (lsAppearance.background === 'color' && lsAppearance.backgroundColor) {
         document.body.style.background = lsAppearance.backgroundColor
+        console.log('set background color')
+      } else if (
+        lsAppearance.background === 'image' &&
+        lsAppearance.backgroundImage &&
+        lsAppearance.backgroundImage.data
+      ) {
+        document.body.style['background-image'] = `  linear-gradient(
+          rgba(0, 0, 0, 0.7), 
+          rgba(0, 0, 0, 0.7)
+        ), url(${lsAppearance.backgroundImage.data})`
+
         console.log('set background color')
       }
     </script>

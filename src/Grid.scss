@@ -111,6 +111,7 @@
 }
 
 .static .draggableOverlay:hover {
+  // if element is static don't show the grab hand
   cursor: default;
 }
 

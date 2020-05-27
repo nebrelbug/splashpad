@@ -1,0 +1,20 @@
+// @import '../_globals';
+
+.file-inputs__upload-card {
+  align-self: flex-start;
+  margin: 8px;
+  max-width: 320px;
+  // position: relative;
+  width: 100%;
+
+  &--application.md-card {
+    background: get-color('background', false);
+  }
+
+  &__dummy-file.md-icon {
+    left: 50%;
+    position: absolute;
+    top: 25%;
+    transform: translateX(-50%);
+  }
+}

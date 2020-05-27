@@ -1,8 +1,10 @@
+/* THIS IS TAKEN ALMOST ENTIRELY FROM A REACT-MD EXAMPLE */
+/* ALL CREDIT TO THE ORIGINAL CREATORS */
+
 import React, { PureComponent } from 'react'
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 import { Button, FileUpload } from 'react-md'
 import guid from 'uuid/dist/v1'
-import { without } from 'lodash/array'
 
 import './_styles.scss'
 import UploadProgress from './UploadProgress'
@@ -14,16 +16,7 @@ const LOADING_PROPS = {
 }
 
 export default class SimpleFileUpload extends PureComponent {
-  constructor(props) {
-    super(props)
-    console.log('props.initialImage')
-    console.log(props.initialImage)
-    this.state = {
-      progress: null,
-      file: props.initialImage,
-      showButton: true
-    }
-  }
+  state = { files: [], progress: null, file: null }
 
   componentWillUnmount() {
     if (this.timeout) {
@@ -44,7 +37,7 @@ export default class SimpleFileUpload extends PureComponent {
       this.fileUpload.abort()
     }
 
-    this.setState({ file: null, progress: null, showButton: true })
+    this.setState({ file: null, progress: null })
   }
 
   /**
@@ -68,15 +61,9 @@ export default class SimpleFileUpload extends PureComponent {
       lastModified: new Date(lastModified)
     }
 
-    this.props.onLoadImage(file)
-    // Show progress bar for one more second
-    this.timeout = setTimeout(() => {
-      this.timeout = null
+    console.log(file)
 
-      this.setState({ progress: null })
-    }, 1000)
-
-    this.setState({ file, progress: 100, showButton: false })
+    this.setState({ file })
   }
 
   handleProgress = (file, progress) => {
@@ -88,8 +75,7 @@ export default class SimpleFileUpload extends PureComponent {
   }
 
   removeFile = (file) => {
-    this.setState({ file: null, showButton: true })
-    this.props.removeImage()
+    this.setState({ file: null })
   }
 
   render() {
@@ -105,35 +91,34 @@ export default class SimpleFileUpload extends PureComponent {
 
     return (
       <div>
-        <UploadProgress
+        {/* <UploadProgress
           progress={progress}
           onAbortClick={this.abortUpload}
           file={file}
+        /> */}
+        {/* {!this.state.file && ( */}
+        <FileUpload
+          accept='image/*'
+          id='background-image-upload'
+          secondary
+          name='background-image-upload'
+          ref={this.setFileUpload}
+          label='Upload Background Image'
+          onLoadStart={this.setFile}
+          onProgress={this.handleProgress}
+          onLoad={this.handleLoad}
         />
-
+        {/* )} */}
         <CSSTransitionGroup
           component='section'
           transitionName='md-cross-fade'
           transitionEnterTimeout={300}
           transitionLeave={false}
-          //   className='md-grid'
+          className='md-grid'
           {...(typeof progress === 'number' ? LOADING_PROPS : undefined)}
         >
           {uploadedFileCard}
         </CSSTransitionGroup>
-        {
-          <FileUpload
-            accept='image/*'
-            id='background-image-upload'
-            secondary
-            name='background-image-upload'
-            ref={this.setFileUpload}
-            label={this.state.file ? 'Upload New Image' : 'Upload Image'}
-            onLoadStart={this.setFile}
-            onProgress={this.handleProgress}
-            onLoad={this.handleLoad}
-          />
-        }
       </div>
     )
   }

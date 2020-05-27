@@ -6,8 +6,12 @@ export default class Clock extends Component {
     this.state = { date: new Date() }
   }
 
-  componentDidMount() {
+  startTimer = () => {
     this.timerID = setInterval(() => this.tick(), 1000)
+  }
+
+  componentDidMount() {
+    setTimeout(this.startTimer, Date.now() % 1000) // wait until the nearest whole second
   }
 
   componentWillUnmount() {

@@ -3,10 +3,35 @@
 
 #splash-settings-dialog section {
   padding: 0;
+  /* position: absolute; */
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+  -ms-overflow-style: none;
+}
+
+#splash-settings-dialog section::-webkit-scrollbar {
+  display: none;
 }
 
 #splash-settings-dialog > section > section > ul {
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
+  padding-left: 0px !important;
+  position: absolute;
+  width: 100%;
+  z-index: 3;
+  top: -1px; /* otherwise the scroll behind will show through */
+}
+
+#splash-settings-dialog > section > section > div {
+  height: 100%;
+  position: relative;
+  top: 48px;
+}
+
+.md-grid.grid-example {
+  height: 100%;
 }
 
 #splash-settings-dialog > section > section > ul > li {
@@ -19,5 +44,13 @@
 }
 
 .react-swipeable-view-container > div::-webkit-scrollbar {
-  display: none;
+  /* display: none; */
+}
+
+.react-swipeable-view-container > div {
+  height: fit-content !important;
+}
+
+.md-tabs-content {
+  height: calc(485px - 48px);
 }

@@ -54,7 +54,7 @@ export default class WidgetGrid extends React.Component {
     this.state = {
       items: widgets || [],
       widgetCount: widgetCount || false,
-      editing: true,
+      editing: false,
       widgetSettings: false // 'widget-4'
     }
 
@@ -158,9 +158,7 @@ export default class WidgetGrid extends React.Component {
       }
     }
     // TIME OUT
-    throw new Error(
-      'Could not find a place for new item in the first 10000 rows'
-    )
+    console.error('Could not find a place for new item in the first 10000 rows')
 
     return [0, 0]
   }

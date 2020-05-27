@@ -1,7 +1,15 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
-import { Button, Card, CardTitle, FontIcon, Media } from 'react-md'
+import { Button, Card, CardActions, CardTitle, Media } from 'react-md'
+
+function getLang() {
+  if (navigator.languages !== undefined) {
+    return navigator.languages[0]
+  } else {
+    return navigator.language
+  }
+}
 
 function formatBytes(bytes, decimals = 2) {
   if (bytes === 0) return '0 Bytes'
@@ -28,14 +36,11 @@ class UploadedFileCard extends PureComponent {
       ]).isRequired
     }).isRequired,
     onRemoveClick: PropTypes.func.isRequired
-    // locale: PropTypes.string
   }
 
   state = {
-    // aspectRatio: undefined
+    aspectRatio: undefined
   }
-
-  formatter = Intl.DateTimeFormat('en-US')
 
   gcd = (a, b) => {
     if (b === 0) {
@@ -51,9 +56,11 @@ class UploadedFileCard extends PureComponent {
     const x = w / denominator
     const y = h / denominator
 
-    if (x < y) {
-      this.setState({ aspectRatio: '1-1' })
-    }
+    // if (x < y) {
+    //   this.setState({ aspectRatio: '1-1' })
+    // }
+
+    // this.setState({ aspectRatio: '1-1' })
   }
 
   removeCard = () => {
@@ -61,35 +68,25 @@ class UploadedFileCard extends PureComponent {
   }
 
   render() {
-    // const { aspectRatio } = this.state
+    const { aspectRatio } = this.state
     const { name, size, lastModified, data, type } = this.props.file
-
-    let content = (
-      <img
-        src={data}
-        alt={name}
-        //   onLoad={this.findClosestAspectRatio}
-      />
-    )
-
-    content = <div className={'aspect-ratio'}>{content}</div>
 
     return (
       <Card className={cn('file-inputs__upload-card')}>
-        <Button
-          icon
-          onClick={this.removeCard}
-          className='file-inputs__upload-card__remove'
-        >
-          close
-        </Button>
-        {content}
+        {/* <Media aspectRatio={'16-9'}> */}
+        <img src={data} alt={name} onLoad={this.findClosestAspectRatio} />
+        {/* </Media> */}
         <CardTitle
-          title={`${name}`}
-          //   subtitle={`Last Modified: ${this.formatter.format(
-          //     lastModified
-          //   )}. Size: (${formatBytes(size)})`}
+          title={`${name} ${type ? `(${type})` : ''}`}
+          subtitle={`Last Modified: ${Intl.DateTimeFormat(
+            getLang() - 'US'
+          ).format(lastModified)}. Size: (${formatBytes(size)})`}
         />
+        <CardActions centered>
+          <Button flat secondary onClick={this.removeCard}>
+            Remove Image
+          </Button>
+        </CardActions>
       </Card>
     )
   }
