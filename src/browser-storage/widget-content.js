@@ -27,6 +27,7 @@ function saveWidgetSettings(uniqueWidgetId, newSettings) {
     .then(function (oldContent) {
       // This code runs once the value has been loaded
       // from the offline store.
+      oldContent = oldContent || {}
       widgetContentStore.setItem(uniqueWidgetId, {
         ...oldContent,
         settings: {
@@ -46,7 +47,7 @@ async function getWidgetContent(uniqueWidgetId) {
 }
 
 async function getWidgetSettings(uniqueWidgetId) {
-  return (await widgetContentStore.getItem(uniqueWidgetId).settings) || {}
+  return (await widgetContentStore.getItem(uniqueWidgetId)).settings || {}
 }
 
 export {

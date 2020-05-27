@@ -16,10 +16,11 @@ export default class Clock extends Component {
       date: new Date(),
       settings: {
         align: 'center',
-        fontSize: 14,
+        fontSize: 28,
         border: false,
         textColor: '#000'
-      }
+      },
+      visible: false
     }
   }
 
@@ -45,15 +46,19 @@ export default class Clock extends Component {
 
   componentDidMount() {
     getWidgetSettings(this.props.uniqueKey).then((widgetSettings) => {
-      var settings = widgetSettings || {}
-      this.setState({
-        settings: {
-          fontSize: settings.fontSize || 28,
-          align: settings.align || 'center',
-          border: settings.border || false, // false is default
-          textColor: settings.textColor || '#000'
-        }
-      })
+      if (widgetSettings) {
+        console.log('settings is:')
+        console.log(widgetSettings)
+        this.setState({
+          settings: {
+            fontSize: widgetSettings.fontSize || 28,
+            align: widgetSettings.align || 'center',
+            border: widgetSettings.border || false, // false is default
+            textColor: widgetSettings.textColor || '#000'
+          },
+          visible: true
+        })
+      }
     })
 
     setTimeout(this.startTimer, (Date.now() % 1000) + 10) // wait until the nearest whole second, then 10 extra milliseconds so we don't have two clocks right on opposite sides of the second
@@ -79,7 +84,8 @@ export default class Clock extends Component {
             position: 'absolute',
             display: 'table',
             width: '100%',
-            height: '100%'
+            height: '100%',
+            visibility: this.state.visible ? 'visible' : 'hidden'
           }}
           className={widgetSettings.border ? 'splash-widget-bordered' : ''}
         >
