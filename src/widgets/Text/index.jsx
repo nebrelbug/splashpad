@@ -7,6 +7,7 @@ import {
 } from '../../browser-storage/widget-content'
 
 import ContentEditable from 'react-contenteditable'
+import { TwitterPicker } from 'react-color'
 
 import {
   Button,
@@ -31,7 +32,8 @@ export default class Text extends Component {
       settings: {
         align: 'center',
         fontSize: 14,
-        border: false
+        border: false,
+        textColor: 'black'
       }
     }
 
@@ -50,7 +52,8 @@ export default class Text extends Component {
           settings: {
             fontSize: settings.fontSize || 0,
             align: settings.align || 'center',
-            border: settings.border || false // false is default
+            border: settings.border || false, // false is default
+            textColor: settings.textColor || '#000'
           }
         })
       }
@@ -160,6 +163,22 @@ export default class Text extends Component {
     )
   }
 
+  setTextColor = (newColor) => {
+    this.setState(
+      {
+        settings: {
+          ...this.state.settings,
+          textColor: newColor.hex
+        }
+      },
+      () => {
+        saveWidgetSettings(this.props.uniqueKey, {
+          textColor: newColor.hex
+        })
+      }
+    )
+  }
+
   render = () => {
     var widgetSettings = this.state.settings || {}
 
@@ -231,7 +250,8 @@ export default class Text extends Component {
             }
             style={{
               fontSize: widgetSettings.fontSize + 'px',
-              textAlign: widgetSettings.align || 'center'
+              textAlign: widgetSettings.align || 'center',
+              color: widgetSettings.textColor || '#000'
             }}
           />
         </div>
@@ -288,6 +308,21 @@ export default class Text extends Component {
             value={this.state.settings.fontSize}
             onChange={this.setFontSize}
             editable
+          />
+          <br />
+          <TwitterPicker
+            triangle={'hide'}
+            width='100%'
+            colors={[
+              '#000',
+              '#fff',
+              '#9e9e9e', // $md-grey-500
+              '#03a9f4', // $md-light-blue-500
+              '#f44336' // $md-red-500
+              // '#ff6e40' // $md-deep-orange-a-200
+            ]}
+            color={this.state.settings.textColor}
+            onChangeComplete={this.setTextColor}
           />
         </DialogContainer>
       </>
