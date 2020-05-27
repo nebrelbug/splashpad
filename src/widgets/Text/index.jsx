@@ -13,26 +13,13 @@ import {
   FontIcon,
   DialogContainer,
   SelectionControl,
-  Slider,
-  List,
-  ListItem,
-  Subheader,
-  Divider,
-  Avatar
+  SelectField,
+  Slider
 } from 'react-md'
 
 import './text.css'
 
-const InfoIcon = () => <FontIcon>info</FontIcon>
-
-var itemsToAdd = [
-  { name: 'Sticky Note', key: 'note', icon: 'note', color: 'amber' },
-  { name: 'Searchbar', key: 'search', icon: 'search' },
-  { name: 'Clock', key: 'clock', icon: 'schedule' },
-  { name: 'Text', key: 'text', icon: 'text_fields' }
-]
-
-var fontSizes = ['1em', '1.3em', '1.5em', '2em', '3em']
+// var fontSizes = ['1em', '1.3em', '1.5em', '2em', '3em']
 
 export default class Text extends Component {
   constructor() {
@@ -43,7 +30,8 @@ export default class Text extends Component {
       editing: false,
       settings: {
         align: 'center',
-        fontSizeIndex: 0
+        fontSize: 14,
+        border: false
       }
     }
 
@@ -60,8 +48,9 @@ export default class Text extends Component {
         this.setState({
           content: widgetContent.content || '',
           settings: {
-            fontSizeIndex: settings.fontSizeIndex || 0,
-            align: settings.align || 'center'
+            fontSize: settings.fontSize || 0,
+            align: settings.align || 'center',
+            border: settings.border || false // false is default
           }
         })
       }
@@ -82,19 +71,56 @@ export default class Text extends Component {
     this.setState({ hovered: false })
   }
 
-  toggleFontSize = () => {
+  setFontSize = (newFontSize) => {
     this.setState(
       {
         settings: {
           ...this.state.settings,
-
-          fontSizeIndex:
-            (this.state.settings.fontSizeIndex + 1) % fontSizes.length
+          fontSize: newFontSize
         }
       },
       () => {
         saveWidgetSettings(this.props.uniqueKey, {
-          fontSizeIndex: this.state.settings.fontSizeIndex
+          fontSize: this.state.settings.fontSize
+        })
+      }
+    )
+  }
+
+  toggleFontSize = () => {
+    let oldFontSize = this.state.settings.fontSize
+    let newFontSize = 14 // default
+
+    if (oldFontSize < 14) {
+      newFontSize = 14 // 1em
+    } else if (oldFontSize < 21) {
+      newFontSize = 21 // 1.5em
+    } else if (oldFontSize < 28) {
+      newFontSize = 28 // 2em
+    } else if (oldFontSize < 35) {
+      newFontSize = 35 // etc.
+    } else if (oldFontSize < 42) {
+      newFontSize = 42
+    } else if (oldFontSize >= 42) {
+      newFontSize = 14
+    }
+
+    console.log(`fontSize was ${oldFontSize} and is now ${newFontSize}`)
+
+    this.setFontSize(newFontSize)
+  }
+
+  setTextAlign = (newAlign) => {
+    this.setState(
+      {
+        settings: {
+          ...this.state.settings,
+          align: newAlign
+        }
+      },
+      () => {
+        saveWidgetSettings(this.props.uniqueKey, {
+          align: newAlign
         })
       }
     )
@@ -114,16 +140,21 @@ export default class Text extends Component {
       newAlign = 'right'
     }
 
+    this.setTextAlign(newAlign)
+  }
+
+  toggleBorder = () => {
+    // console.log(`showBorder is ${showBorder}`)
     this.setState(
       {
         settings: {
           ...this.state.settings,
-          align: newAlign
+          border: !this.state.settings.border
         }
       },
       () => {
         saveWidgetSettings(this.props.uniqueKey, {
-          align: newAlign
+          border: this.state.settings.border
         })
       }
     )
@@ -194,10 +225,12 @@ export default class Text extends Component {
             disabled={!this.state.editing} // use true to disable edition
             onChange={this.handleChange} // handle innerHTML change
             className={
-              'textEditWidget ' + (this.state.editing ? 'editing' : '')
+              'textEditWidget ' +
+              (this.state.editing ? 'editing' : '') +
+              (this.state.settings.border ? 'bordered' : '')
             }
             style={{
-              fontSize: fontSizes[widgetSettings.fontSizeIndex] || '1em',
+              fontSize: widgetSettings.fontSize + 'px',
               textAlign: widgetSettings.align || 'center'
             }}
           />
@@ -212,34 +245,35 @@ export default class Text extends Component {
           // disableScrollLocking={true}
           renderNode={document.getElementById('dialog-container')} // or whatever render node you want
         >
-          {/* <List className=''>
-            {itemsToAdd.map(({ name, key, icon, color }, i) => (
-              <ListItem
-                leftAvatar={
-                  <Avatar
-                    suffix={color}
-                    icon={<FontIcon>{icon}</FontIcon>}
-                    random
-                  />
-                }
-                onClick={() => {
-                  this.hide()
-                  this.props.addItem(key)
-                }}
-                // rightIcon={<InfoIcon />}
-                primaryText={name}
-                // secondaryText='Jan 9, 2014'
-                key={i}
-              />
-            ))}
-          </List> */}
-          {/* <GUI /> */}
-
           <SelectionControl
             type='switch'
             label='Show Border'
             name='show-border'
-            defaultChecked
+            checked={this.state.settings.border}
+            onClick={this.toggleBorder}
+          />
+          <SelectField
+            id='select-field-2'
+            label='Align'
+            // placeholder='Center'
+            className='md-cell'
+            menuItems={[
+              {
+                label: 'Left',
+                value: 'left'
+              },
+              {
+                label: 'Center',
+                value: 'center'
+              },
+              {
+                label: 'Right',
+                value: 'right'
+              }
+            ]}
+            simplifiedMenu={false}
+            value={this.state.settings.align}
+            onChange={this.setTextAlign}
           />
           <Slider
             // label='Discrete with ticks and precision'
@@ -251,6 +285,8 @@ export default class Text extends Component {
             valuePrecision={2}
             style={{ marginTop: '10px' }}
             leftIcon={<FontIcon>format_size</FontIcon>}
+            value={this.state.settings.fontSize}
+            onChange={this.setFontSize}
             editable
           />
         </DialogContainer>

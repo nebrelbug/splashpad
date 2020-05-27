@@ -64,7 +64,7 @@ export default class App extends PureComponent {
             />
           }
         /> */}
-        <Grid />
+        <Grid appSettingsOpen={this.state.settingsOpen} />
       </div>
     )
   }

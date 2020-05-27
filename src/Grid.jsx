@@ -55,7 +55,7 @@ export default class WidgetGrid extends React.Component {
       items: widgets || [],
       widgetCount: widgetCount || false,
       editing: false,
-      widgetSettings: false // 'widget-4'
+      widgetSettings: 'widget-12'
     }
 
     // this.resetLayout = this.resetLayout.bind(this)
@@ -169,6 +169,11 @@ export default class WidgetGrid extends React.Component {
     //   `this.state.widgetSettings = ${this.state.widgetSettings}, key = ${key}`
     // )
 
+    let showSettingsControls =
+      this.state.editing &&
+      !this.state.widgetSettings &&
+      !this.props.appSettingsOpen
+
     var widget = widgets[el.type] || fallbackWidget
 
     var WidgetComponent = widget.component
@@ -177,10 +182,10 @@ export default class WidgetGrid extends React.Component {
       <div
         key={key}
         style={{
-          background: this.state.editing ? 'rgba(200, 200, 200, 0.5)' : 'none'
+          background: showSettingsControls ? 'rgba(200, 200, 200, 0.5)' : 'none'
         }}
       >
-        {this.state.editing && (
+        {showSettingsControls && (
           <>
             {/* <div style={{ position: 'absolute', left: '50%' }}></div> */}
             <Button
@@ -211,7 +216,7 @@ export default class WidgetGrid extends React.Component {
           editingGrid={this.state.editing}
         />
 
-        {this.state.editing && (
+        {showSettingsControls && (
           <div
             style={{
               position: 'absolute',
@@ -322,6 +327,13 @@ export default class WidgetGrid extends React.Component {
   render() {
     console.log('Rendering...')
     console.log(this.state.items)
+    let showGridControls =
+      this.state.editing &&
+      !this.state.widgetSettings &&
+      !this.props.appSettingsOpen
+
+    // don't show grid controls when app settings or widget settings are open
+
     return (
       <>
         <div>
@@ -331,8 +343,8 @@ export default class WidgetGrid extends React.Component {
             onBreakpointChange={this.onBreakpointChange}
             measureBeforeMount={true}
             useCSSTransforms={true}
-            isDraggable={this.state.editing && !this.state.widgetSettings} // this makes sure it doesn't resize when widget settings are in the foreground
-            isResizable={this.state.editing}
+            isDraggable={showGridControls}
+            isResizable={showGridControls}
             preventCollision={true}
             draggableCancel='.editButton'
             // TODO: this doesn't work...

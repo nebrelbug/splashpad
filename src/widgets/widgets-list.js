@@ -7,7 +7,7 @@ import Text from './Text'
 
 function Blank({ editingGrid }) {
   return (
-    <div style={{ padding: '6px', fontSize: '12px' }}>
+    <div style={{ padding: '6px', fontSize: '12px', textAlign: 'center' }}>
       {editingGrid && <p style={{ lineHeight: 1 }}>Place&shy;holder</p>}
     </div>
   )
@@ -15,7 +15,7 @@ function Blank({ editingGrid }) {
 
 function Unknown() {
   return (
-    <div style={{ padding: '6px', fontSize: '14px' }}>
+    <div style={{ padding: '6px', fontSize: '14px', textAlign: 'center' }}>
       <p>Uh-oh. Unknown widget type</p>
     </div>
   )

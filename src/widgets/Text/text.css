@@ -1,11 +1,14 @@
 .textEditWidget {
   font-family: sans-serif;
-  border: 1px solid #aaa;
   padding: 5px;
   height: 100%;
   overflow: auto;
   overflow-x: hidden;
   word-wrap: break-word;
+}
+
+.textEditWidget.bordered {
+  border: 1px solid #aaa;
 }
 
 .textEditWidget.editing {
