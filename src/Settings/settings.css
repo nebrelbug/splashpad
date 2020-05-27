@@ -16,7 +16,7 @@
 }
 
 #splash-settings-dialog > section > section > ul {
-  /* overflow-x: hidden; */
+  overflow-x: hidden;
   padding-left: 0px !important;
   position: absolute;
   width: 100%;
@@ -53,4 +53,5 @@
 
 .md-tabs-content {
   height: calc(485px - 48px);
+  overflow-x: initial !important;
 }

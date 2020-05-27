@@ -60,12 +60,13 @@
         lsAppearance.backgroundImage &&
         lsAppearance.backgroundImage.data
       ) {
+        var imageDarkness = lsAppearance.backgroundImageDarkness || 0
         document.body.style['background-image'] = `  linear-gradient(
-          rgba(0, 0, 0, 0.7), 
-          rgba(0, 0, 0, 0.7)
+          rgba(0, 0, 0, ${imageDarkness}), 
+          rgba(0, 0, 0, ${imageDarkness})
         ), url(${lsAppearance.backgroundImage.data})`
 
-        console.log('set background color')
+        console.log('set background image')
       }
     </script>
     <noscript>You need to enable JavaScript to run this app.</noscript>

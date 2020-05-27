@@ -16,6 +16,8 @@ var backgroundColor =
   getSplashSettings('appearance', 'backgroundColor') || '#fafafa'
 
 var backgroundImage = getSplashSettings('appearance', 'backgroundImage') || null
+var backgroundImageDarkness =
+  getSplashSettings('appearance', 'backgroundImageDarkness') || 0
 
 var background = getSplashSettings('appearance', 'background') || 'color' // 'color' or 'image'
 
@@ -26,15 +28,17 @@ function setBackgroundColor(color) {
   saveSplashSettings('appearance', 'background', 'color')
 }
 
-function setBackgroundImage(image) {
+function setBackgroundImage(image, darkness) {
   if (image && image.data) {
     document.body.style['background-image'] = `linear-gradient(
-        rgba(0, 0, 0, 0.7), 
-        rgba(0, 0, 0, 0.7)
+        rgba(0, 0, 0, ${darkness}), 
+        rgba(0, 0, 0, ${darkness})
       ), url(${image.data})`
     backgroundImage = image
     saveSplashSettings('appearance', 'backgroundImage', image)
     saveSplashSettings('appearance', 'background', 'image')
+
+    saveSplashSettings('appearance', 'backgroundImageDarkness', darkness)
   }
 }
 
@@ -48,7 +52,7 @@ export default class AppearanceSettings extends Component {
 
   onLoadImage = (image) => {
     console.log(image)
-    setBackgroundImage(image)
+    setBackgroundImage(image, backgroundImageDarkness)
   }
 
   onRemoveImage = () => {
@@ -57,6 +61,10 @@ export default class AppearanceSettings extends Component {
     backgroundImage = null
     saveSplashSettings('appearance', 'backgroundImage', null)
     saveSplashSettings('appearance', 'background', 'color')
+  }
+
+  onDarknessChange = (newValue) => {
+    setBackgroundImage(backgroundImage, newValue)
   }
 
   render() {
@@ -76,7 +84,7 @@ export default class AppearanceSettings extends Component {
               if (value === 'color') {
                 setBackgroundColor(backgroundColor)
               } else if (value === 'image') {
-                setBackgroundImage(backgroundImage)
+                setBackgroundImage(backgroundImage, backgroundImageDarkness)
               }
             }}
             controls={[
@@ -106,15 +114,20 @@ export default class AppearanceSettings extends Component {
                 onLoadImage={this.onLoadImage}
                 removeImage={this.onRemoveImage}
               />
-              <Slider
-                id='custom-range-step-slider'
-                label='Discrete Min = 1, Max = 3, Step = 0.25'
-                min={1}
-                max={3}
-                step={0.25}
-                valuePrecision={2}
-                discrete
-              />
+              <br /> <br />
+              {backgroundImage && backgroundImage.data && (
+                <Slider
+                  id='custom-range-step-slider'
+                  label='Darken Image'
+                  min={0}
+                  max={1}
+                  step={0.1}
+                  valuePrecision={2}
+                  defaultValue={backgroundImageDarkness}
+                  onChange={this.onDarknessChange}
+                  discrete
+                />
+              )}
             </>
           )}
         </Cell>
