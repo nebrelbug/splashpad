@@ -269,7 +269,7 @@ export default class WidgetGrid extends React.Component {
                 }}
               >
                 <div style={{ width: 'fit-content', margin: 'auto' }}>
-                  <Button
+                  {/* <Button
                     style={{
                       paddingTop: '10px'
                     }}
@@ -283,12 +283,14 @@ export default class WidgetGrid extends React.Component {
                     }}
                   >
                     pin widget to grid
-                  </Button>
+                  </Button> */}
                   {widget.settingsComponent && (
                     <Button
-                      style={{
-                        marginLeft: '8px'
-                      }}
+                      style={
+                        {
+                          // marginLeft: '8px'
+                        }
+                      }
                       className='settingsButton'
                       icon
                       onClick={() => {
