@@ -13,6 +13,8 @@ import {
 } from 'react-md'
 import widgets from './widgets/widgets-list'
 
+import './addwidgets.css'
+
 var Mousetrap = require('mousetrap')
 
 const InfoIcon = () => <FontIcon>info</FontIcon>
@@ -28,11 +30,9 @@ export default class AddButtons extends React.PureComponent {
 
     this.state = {
       visible: false,
-      addButtonHovered: false
+      addButtonHovered: false,
+      description: false
     }
-
-    this.mouseOut = this.mouseOut.bind(this)
-    this.mouseOver = this.mouseOver.bind(this)
   }
 
   componentDidMount() {
@@ -51,15 +51,19 @@ export default class AddButtons extends React.PureComponent {
     this.setState({ visible: false })
   }
 
+  hideDescription = () => {
+    this.setState({ description: false })
+  }
+
   toggleEditing = () => {
     this.setState({ visible: !this.state.visible })
   }
 
-  mouseOver() {
+  mouseOver = () => {
     this.setState({ addButtonHovered: true })
   }
 
-  mouseOut() {
+  mouseOut = () => {
     this.setState({ addButtonHovered: false })
   }
 
@@ -136,7 +140,7 @@ export default class AddButtons extends React.PureComponent {
           <List className=''>
             {/* <Subheader primaryText='Folders' /> */}
             {widgetList.map(
-              ({ name, description, key, icon, color }, i) => (
+              ({ name, subheading, description, key, icon, color }, i) => (
                 <ListItem
                   leftAvatar={
                     <Avatar
@@ -151,12 +155,35 @@ export default class AddButtons extends React.PureComponent {
                   }}
                   // rightIcon={<InfoIcon />}
                   primaryText={name}
-                  secondaryText={description}
+                  secondaryText={subheading}
+                  renderChildrenOutside
                   key={i}
-                />
+                >
+                  <Button
+                    icon
+                    onClick={() => {
+                      this.setState({
+                        description: description,
+                        descriptionTitle: name
+                      })
+                    }}
+                  >
+                    info
+                  </Button>
+                </ListItem>
               )
             )}
           </List>
+        </DialogContainer>
+        <DialogContainer
+          id='add-widget-description'
+          visible={this.state.description !== false}
+          title={this.state.descriptionTitle}
+          onHide={this.hideDescription}
+          focusOnMount={false}
+          // width='40%'
+        >
+          {this.state.description || <p>Responsive widget</p>}
         </DialogContainer>
       </>
     )

@@ -1,6 +1,8 @@
 import React from 'react'
 
 import Clock from './Clock'
+import Embed from './Embed'
+import Music from './Music'
 import Note from './Note'
 import Search from './Search'
 import Text from './Text'
@@ -24,7 +26,8 @@ function Unknown() {
 var widgets = {
   note: {
     name: 'Sticky Note',
-    description: '',
+    subheading: '',
+    description: <p>This sticky note widget stores its content locally</p>,
     component: Note,
     icon: 'note',
     color: 'amber',
@@ -36,7 +39,7 @@ var widgets = {
   },
   search: {
     name: 'Searchbar',
-    description: '',
+    subheading: '',
     component: Search,
     icon: 'search',
     settingsComponent: true,
@@ -48,21 +51,38 @@ var widgets = {
   },
   clock: {
     name: 'Clock',
-    description: '',
+    subheading: '',
     component: Clock,
+    icon: 'schedule',
+    settingsComponent: true
+  },
+  music: {
+    name: 'Music',
+    subheading: 'Embed playlists or tracks',
+    description: (
+      <p>Currently this only supports Spotify playlists and tracks.</p>
+    ),
+    component: Music,
+    icon: 'music_note',
+    settingsComponent: true
+  },
+  embed: {
+    name: 'Embed',
+    subheading: '',
+    component: Embed,
     icon: 'schedule',
     settingsComponent: true
   },
   text: {
     name: 'Text',
-    description: 'Double-click to edit',
+    subheading: 'Double-click to edit',
     component: Text,
     icon: 'text_fields',
     settingsComponent: true
   },
   blank: {
     name: 'Blank Widget',
-    description: 'For spacing',
+    subheading: 'For spacing',
     component: Blank,
     icon: 'check_box_outline_blank'
   }

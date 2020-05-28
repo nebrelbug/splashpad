@@ -1,0 +1,7 @@
+#add-widget-dialog > section > ul > li {
+  height: 64px;
+}
+
+#add-widget-dialog > section > ul > li > div.md-fake-btn {
+  width: calc(100% - 56px);
+}

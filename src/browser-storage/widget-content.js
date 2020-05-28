@@ -47,7 +47,9 @@ async function getWidgetContent(uniqueWidgetId) {
 }
 
 async function getWidgetSettings(uniqueWidgetId) {
-  return (await widgetContentStore.getItem(uniqueWidgetId)).settings || {}
+  return (
+    ((await widgetContentStore.getItem(uniqueWidgetId)) || {}).settings || {}
+  )
 }
 
 export {
