@@ -1,5 +1,5 @@
-import React, { Component, useEffect } from 'react'
-// import { TextField } from 'react-md'
+import React, { Component } from 'react'
+import { TextField } from 'react-md'
 import {
   getWidgetContent,
   saveWidgetContent
@@ -9,32 +9,74 @@ import WidgetSettings from '../WidgetSettings'
 
 import './embed.css'
 
-export default class Embed extends Component {
+var defaultEmbed = 'https://wikipedia.org'
+
+export default class Music extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { title: '', content: '' }
+    this.state = {}
+  }
+
+  componentDidMount() {
+    getWidgetContent(this.props.uniqueKey).then((widgetContent) => {
+      if (widgetContent) {
+        this.setState({
+          url: widgetContent.url
+        })
+      } else {
+        this.setState({
+          url: defaultEmbed
+        })
+      }
+    })
+  }
+
+  onSettingsChange = (key, newValue) => {
+    this.setState(
+      {
+        [key]: newValue
+      },
+      () => {
+        saveWidgetContent(this.props.uniqueKey, {
+          [key]: newValue
+        })
+      }
+    )
   }
 
   render() {
     return (
       <>
         <div style={{ padding: '6px', height: '100%' }}>
-          <iframe
-            title='My Iframe!'
-            width='100%'
-            height='100%'
-            src='https://open.spotify.com/embed/track/27MB0qHaYAZiTlwg25js1Y'
-            frameborder='0'
-            allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'
-            allowfullscreen
-          ></iframe>
+          {this.state.url && (
+            <iframe
+              title={'Embed - ' + this.props.uniqueKey}
+              width='100%'
+              height='100%'
+              src={this.state.url || ''}
+              frameborder='0'
+              allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'
+              allowfullscreen
+            ></iframe>
+          )}
         </div>
         <WidgetSettings
           visible={this.props.settingsVisible}
           onHide={this.props.hideSettings}
         >
-          <button>Settings</button>
+          <TextField
+            id='floating-center-title'
+            label='Embed Frame URL'
+            lineDirection='center'
+            placeholder='https://example.com/ ...'
+            className='md-cell md-cell--bottom'
+            style={{ width: 'auto' }}
+            value={this.state.url}
+            onChange={(newURL) => {
+              this.onSettingsChange('url', newURL)
+            }}
+          />
         </WidgetSettings>
       </>
     )

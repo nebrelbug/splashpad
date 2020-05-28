@@ -149,6 +149,10 @@ export default class Text extends Component {
             }
           }}
         >
+          {this.props.editingGrid && (
+            <p style={{ textAlign: 'center' }}>Text</p>
+          )}
+
           {this.state.editing && (
             <>
               <Button

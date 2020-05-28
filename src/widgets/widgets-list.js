@@ -56,23 +56,6 @@ var widgets = {
     icon: 'schedule',
     settingsComponent: true
   },
-  music: {
-    name: 'Music',
-    subheading: 'Embed playlists or tracks',
-    description: (
-      <p>Currently this only supports Spotify playlists and tracks.</p>
-    ),
-    component: Music,
-    icon: 'music_note',
-    settingsComponent: true
-  },
-  embed: {
-    name: 'Embed',
-    subheading: '',
-    component: Embed,
-    icon: 'schedule',
-    settingsComponent: true
-  },
   text: {
     name: 'Text',
     subheading: 'Double-click to edit',
@@ -85,6 +68,23 @@ var widgets = {
     subheading: 'For spacing',
     component: Blank,
     icon: 'check_box_outline_blank'
+  },
+  music: {
+    name: 'Music',
+    subheading: 'Embed playlists or tracks',
+    description: (
+      <p>Currently this only supports Spotify playlists, albums, and tracks.</p>
+    ),
+    component: Music,
+    icon: 'music_note',
+    settingsComponent: true
+  },
+  embed: {
+    name: 'Embed',
+    subheading: '',
+    component: Embed,
+    icon: 'code',
+    settingsComponent: true
   }
 }
 
