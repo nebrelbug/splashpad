@@ -55,7 +55,7 @@ export default class WidgetGrid extends React.Component {
       items: widgets || [],
       widgetCount: widgetCount || false,
       editing: false,
-      widgetSettings: 'widget-0'
+      widgetSettings: false // 'widget-0'
     }
 
     // this.resetLayout = this.resetLayout.bind(this)

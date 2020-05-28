@@ -54,6 +54,7 @@ export default class AppearanceSettings extends Component {
   }
 
   onRemoveImage = () => {
+    background = 'color'
     this.setState({ background: 'color' })
     setBackgroundColor(backgroundColor)
     backgroundImage = null
@@ -78,6 +79,8 @@ export default class AppearanceSettings extends Component {
             value={this.state.background}
             onChange={(value) => {
               this.setState({ background: value })
+              background = value // store so it updates on settings re-open
+
               // Now change styles on page body
               if (value === 'color') {
                 setBackgroundColor(backgroundColor)

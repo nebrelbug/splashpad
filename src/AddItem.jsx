@@ -82,10 +82,10 @@ export default class AddButtons extends React.PureComponent {
         <div
           style={{
             position: 'fixed',
-            right: 64,
-            bottom: 8,
-            height: 48,
-            width: this.state.addButtonHovered ? 48 + 8 + 48 : 48
+            right: '8px',
+            bottom: '64px',
+            height: this.state.addButtonHovered ? 48 + 8 + 48 + 'px' : '48px',
+            width: '48px'
           }}
           onMouseEnter={this.mouseOver}
           onMouseLeave={this.mouseOut}
@@ -114,11 +114,11 @@ export default class AddButtons extends React.PureComponent {
           <Button
             style={{
               position: 'fixed',
-              right: 64,
-              bottom: 8,
-              height: 48,
-              width: 48,
-              padding: 12
+              right: '8px',
+              bottom: '64px',
+              height: '48px',
+              width: '48px',
+              padding: '12px'
             }}
             icon
             // secondary
