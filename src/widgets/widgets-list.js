@@ -67,7 +67,7 @@ var widgets = {
     name: 'Blank Widget',
     subheading: 'For spacing',
     component: Blank,
-    icon: 'check_box_outline_blank'
+    icon: ''
   },
   music: {
     name: 'Music',

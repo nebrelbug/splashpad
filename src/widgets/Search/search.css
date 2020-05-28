@@ -1,3 +1,7 @@
 #phone-number-with-icon-left::-webkit-search-cancel-button {
   display: none;
 }
+
+#select-search-engine-menu > ul {
+  position: relative;
+}
