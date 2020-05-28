@@ -68,8 +68,17 @@
   font-weight: bold;
 }
 
+.smallButton > svg {
+  width: 7px !important;
+  margin: auto;
+  display: block;
+  color: #fafafa !important;
+  // margin-left: 0.5px;
+  font-weight: bold;
+}
+
 .smallButton {
-  background-color: rgba(0, 0, 0, 0.54);
+  background-color: rgba(0, 0, 0, 0.6); // originally rgba(0, 0, 0, 0.54)
 }
 
 .settingsButton {
@@ -82,22 +91,22 @@
   color: black;
 }
 
-.settingsButton.md-background--primary {
-  background: $md-primary-color; // $md-light-blue-500 (primary)
+.smallButton.md-background--primary {
+  background-color: $md-primary-color; // $md-light-blue-500 (primary)
   color: #fff;
 }
 
-.settingsButton.md-background--primary:hover {
-  background: $md-light-blue-300 !important;
+.smallButton.md-background--primary:hover {
+  background-color: $md-light-blue-300 !important;
 }
 
-.settingsButton.md-background--secondary {
-  background: $md-secondary-color; // $md-deep-orange-a-200
+.smallButton.md-background--secondary {
+  background-color: $md-secondary-color; // $md-deep-orange-a-200
   color: #fff;
 }
 
-.settingsButton.md-background--secondary:hover {
-  background: $md-deep-orange-a-100 !important;
+.smallButton.md-background--secondary:hover {
+  background-color: $md-deep-orange-a-100 !important;
 }
 
 .settingsButton > i {

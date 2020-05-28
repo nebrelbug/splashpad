@@ -194,10 +194,32 @@ export default class WidgetGrid extends React.Component {
                 width: 18,
                 padding: 0,
                 zIndex: 999,
+                float: 'left',
+                position: 'absolute',
+                top: 2,
+                left: 2
+              }}
+              className='smallButton'
+              icon
+              iconEl={<FontAwesomeIcon icon={faThumbtack} />}
+              secondary={!!el.static}
+              swapTheming={!!el.static}
+              onClick={() => {
+                this.toggleItemStatic(ind)
+              }}
+            >
+              pin item to grid
+            </Button>
+            <Button
+              style={{
+                height: 18,
+                width: 18,
+                padding: 0,
+                zIndex: 999,
                 float: 'right',
                 position: 'absolute',
-                top: -8,
-                right: -8
+                top: 2,
+                right: 2
               }}
               className='smallButton'
               icon
