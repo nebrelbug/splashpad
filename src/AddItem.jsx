@@ -83,8 +83,8 @@ export default class AddButtons extends React.PureComponent {
           style={{
             position: 'fixed',
             right: '8px',
-            bottom: '64px',
-            height: this.state.addButtonHovered ? 48 + 8 + 48 + 'px' : '48px',
+            bottom: '56px',
+            height: this.state.addButtonHovered ? 48 + 48 + 'px' : '48px',
             width: '48px'
           }}
           onMouseEnter={this.mouseOver}
@@ -94,8 +94,8 @@ export default class AddButtons extends React.PureComponent {
             <Button
               style={{
                 position: 'fixed',
-                right: 120,
-                bottom: 8,
+                right: 8,
+                bottom: 104,
                 height: 48,
                 width: 48,
                 padding: 12
@@ -115,7 +115,7 @@ export default class AddButtons extends React.PureComponent {
             style={{
               position: 'fixed',
               right: '8px',
-              bottom: '64px',
+              bottom: '56px',
               height: '48px',
               width: '48px',
               padding: '12px'
@@ -124,7 +124,10 @@ export default class AddButtons extends React.PureComponent {
             // secondary
             swapTheming
             onClick={this.show}
-            className='actionButton'
+            className={
+              'actionButton ' +
+              (this.props.appSettings.buttonStyle === 'light' ? 'light' : '')
+            }
           >
             add_circle_outline
           </Button>

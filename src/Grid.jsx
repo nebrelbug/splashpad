@@ -388,7 +388,7 @@ export default class WidgetGrid extends React.Component {
           </ReactGridLayout>
         </div>
         {this.state.widgetCount !== false && (
-          <AddButtons addItem={this.onAddItem} />
+          <AddButtons addItem={this.onAddItem} {...this.props} />
         )}
 
         <Button
@@ -404,7 +404,10 @@ export default class WidgetGrid extends React.Component {
           // primary={this.state.editing}
           swapTheming
           onClick={this.toggleEditing}
-          className='actionButton'
+          className={
+            'actionButton ' +
+            (this.props.appSettings.buttonStyle === 'light' ? 'light' : '')
+          }
         >
           {this.state.editing ? 'done' : 'edit'}
         </Button>

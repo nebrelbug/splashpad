@@ -2,7 +2,13 @@ import React, { PureComponent } from 'react'
 import { Button } from 'react-md'
 import Grid from './Grid'
 import Settings from './Settings/index.jsx'
+import {
+  getSplashSettings,
+  saveSplashSettings
+} from './browser-storage/splash-settings'
+
 import inkContextTypes from 'react-md/lib/Inks/inkContextTypes'
+
 import './App.css'
 
 export default class App extends PureComponent {
@@ -16,12 +22,29 @@ export default class App extends PureComponent {
     super(props)
 
     this.state = {
-      settingsOpen: false
+      settingsOpen: true,
+      settings: {
+        buttonStyle: getSplashSettings('appearance', 'buttonStyle') || 'dark'
+      }
     }
   }
 
   toggleSettings = () => {
     this.setState({ settingsOpen: !this.state.settingsOpen })
+  }
+
+  onSettingsChange = (category, key, newValue) => {
+    this.setState(
+      {
+        settings: {
+          ...this.state.settings,
+          [key]: newValue
+        }
+      },
+      () => {
+        saveSplashSettings(category, key, newValue)
+      }
+    )
   }
 
   render() {
@@ -30,6 +53,8 @@ export default class App extends PureComponent {
         <Settings
           visible={this.state.settingsOpen}
           onHide={this.toggleSettings}
+          settings={this.state.settings}
+          onSettingsChange={this.onSettingsChange}
         />
         <Button
           style={{
@@ -44,7 +69,10 @@ export default class App extends PureComponent {
           icon
           swapTheming
           onClick={this.toggleSettings}
-          className='actionButton'
+          className={
+            'actionButton ' +
+            (this.state.settings.buttonStyle === 'light' ? 'light' : '')
+          }
         >
           {this.state.settingsOpen ? 'check' : 'settings'}
         </Button>
@@ -64,7 +92,10 @@ export default class App extends PureComponent {
             />
           }
         /> */}
-        <Grid appSettingsOpen={this.state.settingsOpen} />
+        <Grid
+          appSettingsOpen={this.state.settingsOpen}
+          appSettings={this.state.settings}
+        />
       </div>
     )
   }

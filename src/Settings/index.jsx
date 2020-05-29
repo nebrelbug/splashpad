@@ -74,7 +74,7 @@ export default class SimpleFullPageDialog extends Component {
         >
           <Tabs tabId='simple-tab'>
             <Tab label='Appearance'>
-              <Appearance />
+              <Appearance {...this.props} />
             </Tab>
             <Tab label='Miscellaneous'>
               <h3>More settings coming soon!</h3>

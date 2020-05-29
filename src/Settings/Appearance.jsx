@@ -1,5 +1,13 @@
 import React, { Component } from 'react'
-import { Grid, Cell, SelectionControlGroup, Slider } from 'react-md'
+import {
+  Grid,
+  Cell,
+  SelectionControlGroup,
+  SelectionControl,
+  Slider,
+  ExpansionList,
+  ExpansionPanel
+} from 'react-md'
 
 import ColorPicker from '../ColorPicker'
 
@@ -68,71 +76,101 @@ export default class AppearanceSettings extends Component {
 
   render() {
     return (
-      <Grid className='grid-example'>
-        <Cell size={4}>
-          {' '}
-          <SelectionControlGroup
-            id='selection-control-group-radios'
-            name='radio-example'
-            type='radio'
-            label={'Background'}
-            value={this.state.background}
-            onChange={(value) => {
-              this.setState({ background: value })
-              background = value // store so it updates on settings re-open
+      <ExpansionList>
+        <ExpansionPanel
+          label='Background'
+          // secondaryLabel={<i>Customize background image or color</i>}
+          // defaultExpanded
+          footer={null}
+        >
+          <Grid className='grid-example'>
+            <Cell size={4}>
+              <SelectionControlGroup
+                id='selection-control-group-radios'
+                name='radio-example'
+                type='radio'
+                // label={'Background'}
+                value={this.state.background}
+                onChange={(value) => {
+                  this.setState({ background: value })
+                  background = value // store so it updates on settings re-open
 
-              // Now change styles on page body
-              if (value === 'color') {
-                setBackgroundColor(backgroundColor)
-              } else if (value === 'image') {
-                setBackgroundImage(backgroundImage, backgroundImageDarkness)
-              }
+                  // Now change styles on page body
+                  if (value === 'color') {
+                    setBackgroundColor(backgroundColor)
+                  } else if (value === 'image') {
+                    setBackgroundImage(backgroundImage, backgroundImageDarkness)
+                  }
+                }}
+                controls={[
+                  {
+                    label: 'Color (default #FAFAFA)',
+                    value: 'color'
+                  },
+                  {
+                    label: 'Custom Image',
+                    value: 'image'
+                  }
+                ]}
+              />
+            </Cell>
+            <Cell size={4}>
+              {this.state.background === 'color' && (
+                <ColorPicker
+                  initialColor={backgroundColor}
+                  handleChangeComplete={setBackgroundColor}
+                  // onChangeComplete={this.handleChangeComplete}
+                />
+              )}
+              {this.state.background === 'image' && (
+                <>
+                  <BackgroundImageChooser
+                    initialImage={backgroundImage}
+                    onLoadImage={this.onLoadImage}
+                    removeImage={this.onRemoveImage}
+                  />
+                  <br /> <br />
+                  {backgroundImage && backgroundImage.data && (
+                    <Slider
+                      id='custom-range-step-slider'
+                      label='Darken Image'
+                      min={0}
+                      max={1}
+                      step={0.1}
+                      valuePrecision={2}
+                      defaultValue={backgroundImageDarkness}
+                      onChange={this.onDarknessChange}
+                      discrete
+                    />
+                  )}
+                </>
+              )}
+            </Cell>
+          </Grid>
+        </ExpansionPanel>
+        <ExpansionPanel label='Buttons' footer={null}>
+          <SelectionControlGroup
+            id='action-button-style'
+            name='action-button-select'
+            type='radio'
+            value={this.props.settings.buttonStyle}
+            onChange={(value) => {
+              this.props.onSettingsChange('appearance', 'buttonStyle', value)
             }}
+            label='Button Style'
             controls={[
               {
-                label: 'Color (default #FAFAFA)',
-                value: 'color'
+                label: 'Dark',
+                value: 'dark'
               },
               {
-                label: 'Custom Image',
-                value: 'image'
+                label: 'Light',
+                value: 'light'
               }
             ]}
           />
-        </Cell>
-        <Cell size={4}>
-          {this.state.background === 'color' && (
-            <ColorPicker
-              initialColor={backgroundColor}
-              handleChangeComplete={setBackgroundColor}
-              // onChangeComplete={this.handleChangeComplete}
-            />
-          )}
-          {this.state.background === 'image' && (
-            <>
-              <BackgroundImageChooser
-                initialImage={backgroundImage}
-                onLoadImage={this.onLoadImage}
-                removeImage={this.onRemoveImage}
-              />
-              <br /> <br />
-              {backgroundImage && backgroundImage.data && (
-                <Slider
-                  id='custom-range-step-slider'
-                  label='Darken Image'
-                  min={0}
-                  max={1}
-                  step={0.1}
-                  valuePrecision={2}
-                  defaultValue={backgroundImageDarkness}
-                  onChange={this.onDarknessChange}
-                  discrete
-                />
-              )}
-            </>
-          )}
-        </Cell>
-      </Grid>
+        </ExpansionPanel>
+      </ExpansionList>
     )
   }
 }
