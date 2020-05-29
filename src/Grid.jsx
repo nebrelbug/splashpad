@@ -39,7 +39,7 @@ export default class WidgetGrid extends React.Component {
   static defaultProps = {
     className: 'layout',
     cols: 12,
-    rowHeight: 40,
+    rowHeight: 35,
     compactType: null
   }
 

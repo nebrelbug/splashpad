@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 
 import TextWidgetSettings from '../TextWidgetSettings'
 
+import { SelectionControl } from 'react-md'
+
 import {
   getWidgetContent,
   saveWidgetContent,
@@ -18,7 +20,8 @@ export default class Clock extends Component {
         align: 'center',
         fontSize: 28,
         border: false,
-        textColor: '#000'
+        textColor: '#000',
+        displaySeconds: true
       },
       visible: false
     }
@@ -54,7 +57,8 @@ export default class Clock extends Component {
             fontSize: widgetSettings.fontSize || 28,
             align: widgetSettings.align || 'center',
             border: widgetSettings.border || false, // false is default
-            textColor: widgetSettings.textColor || '#000'
+            textColor: widgetSettings.textColor || '#000',
+            displaySeconds: widgetSettings.displaySeconds || false
           },
           visible: true
         })
@@ -80,7 +84,7 @@ export default class Clock extends Component {
       <>
         <div
           style={{
-            padding: '6px',
+            // padding: '6px',
             position: 'absolute',
             display: 'table',
             width: '100%',
@@ -95,10 +99,17 @@ export default class Clock extends Component {
                 margin: 'auto',
                 textAlign: widgetSettings.align || 'center',
                 fontSize: widgetSettings.fontSize + 'px',
+                lineHeight: widgetSettings.fontSize + 'px',
                 color: widgetSettings.textColor || 'black'
               }}
             >
-              {this.state.date.toLocaleTimeString()}
+              {this.state.date.toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: this.state.settings.displaySeconds
+                  ? '2-digit'
+                  : undefined
+              })}
             </h2>
           </div>
         </div>
@@ -107,7 +118,22 @@ export default class Clock extends Component {
           onHide={this.props.hideSettings}
           settings={widgetSettings}
           onSettingsChange={this.onSettingsChange}
-        />
+          maxTextSize={200}
+        >
+          <br />
+          <SelectionControl
+            type='switch'
+            label='Display Seconds'
+            name='display-seconds'
+            checked={widgetSettings.displaySeconds}
+            onClick={() => {
+              this.onSettingsChange(
+                'displaySeconds',
+                !widgetSettings.displaySeconds
+              )
+            }}
+          />
+        </TextWidgetSettings>
       </>
     )
   }

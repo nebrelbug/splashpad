@@ -57,7 +57,7 @@ export default class TextWidgetSettings extends Component {
           // label='Discrete with ticks and precision'
           // discrete
           min={6}
-          max={48}
+          max={this.props.maxTextSize || 48}
           step={2}
           // discreteTicks={0.25}
           valuePrecision={2}
@@ -86,6 +86,7 @@ export default class TextWidgetSettings extends Component {
             this.props.onSettingsChange('textColor', color.hex)
           }}
         />
+        {this.props.children}
       </WidgetSettings>
     )
   }

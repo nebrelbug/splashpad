@@ -98,7 +98,7 @@ export default class Search extends Component {
       <>
         <div
           style={{
-            padding: '6px',
+            // padding: '6px',
             position: 'absolute',
             display: 'table',
             width: '100%',
@@ -110,7 +110,7 @@ export default class Search extends Component {
               zDepth={2}
               className='papers__example'
               style={{
-                padding: '6px',
+                // padding: '6px',
                 paddingRight: '28px',
                 backgroundColor: 'white',
                 borderRadius: '100px'

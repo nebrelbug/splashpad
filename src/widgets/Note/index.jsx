@@ -41,7 +41,13 @@ export default class Note extends Component {
 
   render() {
     return (
-      <div style={{ width: '100%', height: '100%', padding: '6px' }}>
+      <div
+        style={{
+          width: '100%',
+          height: '100%'
+          //padding: '6px'
+        }}
+      >
         <div className='postit'>
           <div
             className='md-text-field-container md-full-width md-text-field-container--input'

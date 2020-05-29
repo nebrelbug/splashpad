@@ -30,7 +30,12 @@ export default function Weather(props) {
   }, [])
 
   return (
-    <div style={{ padding: '6px', height: '100%' }}>
+    <div
+      style={{
+        //padding: '6px',
+        height: '100%'
+      }}
+    >
       <a
         class='weatherwidget-io'
         href='https://forecast7.com/en/40d30n111d68/84097/?unit=us'

@@ -50,7 +50,12 @@ export default class Music extends Component {
   render() {
     return (
       <>
-        <div style={{ padding: '6px', height: '100%' }}>
+        <div
+          style={{
+            // padding: '6px',
+            height: '100%'
+          }}
+        >
           {this.state.url && (
             <iframe
               title={'Spotify embed - ' + this.props.uniqueKey}

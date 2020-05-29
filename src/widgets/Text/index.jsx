@@ -131,7 +131,7 @@ export default class Text extends Component {
       <>
         <div
           style={{
-            padding: '6px',
+            // padding: '6px',
             width: '100%',
             height: '100%'
           }}
@@ -149,7 +149,7 @@ export default class Text extends Component {
             }
           }}
         >
-          {this.props.editingGrid && (
+          {this.props.editingGrid && !this.state.content && (
             <p style={{ textAlign: 'center' }}>Text</p>
           )}
 
