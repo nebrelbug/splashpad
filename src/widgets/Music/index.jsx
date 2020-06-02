@@ -62,9 +62,9 @@ export default class Music extends Component {
               width='100%'
               height='100%'
               src={getIFrameURL(this.state.url || '')}
-              frameborder='0'
+              frameBorder='0'
               allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'
-              allowfullscreen
+              allowFullScreen
             ></iframe>
           )}
         </div>

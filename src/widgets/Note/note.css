@@ -9,7 +9,7 @@
   height: 100%;
   position: relative;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
-  border-top: 1px solid #fdfd86;
+  /* border-top: 1px solid #fdfd86; */ /*I kinda don't like this?*/
   font-size: 22px;
   border-bottom-left-radius: 40px 5px;
   display: inline-block;

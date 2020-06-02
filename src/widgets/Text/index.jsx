@@ -25,7 +25,7 @@ export default class Text extends Component {
       editing: false,
       settings: {
         align: 'center',
-        fontSize: 14,
+        fontSize: 2,
         border: false,
         textColor: '#000'
       }
@@ -44,7 +44,7 @@ export default class Text extends Component {
         this.setState({
           content: widgetContent.content || '',
           settings: {
-            fontSize: settings.fontSize || 14,
+            fontSize: settings.fontSize || 2,
             align: settings.align || 'center',
             border: settings.border || false, // false is default
             textColor: settings.textColor || '#000'
@@ -86,20 +86,20 @@ export default class Text extends Component {
 
   toggleFontSize = () => {
     let oldFontSize = this.state.settings.fontSize
-    let newFontSize = 14 // default
+    let newFontSize = 2 // default
 
-    if (oldFontSize < 14) {
-      newFontSize = 14 // 1em
-    } else if (oldFontSize < 21) {
-      newFontSize = 21 // 1.5em
-    } else if (oldFontSize < 28) {
-      newFontSize = 28 // 2em
-    } else if (oldFontSize < 35) {
-      newFontSize = 35 // etc.
-    } else if (oldFontSize < 42) {
-      newFontSize = 42
-    } else if (oldFontSize >= 42) {
-      newFontSize = 14
+    if (oldFontSize < 2) {
+      newFontSize = 2
+    } else if (oldFontSize < 4) {
+      newFontSize = 4
+    } else if (oldFontSize < 6) {
+      newFontSize = 6
+    } else if (oldFontSize < 8) {
+      newFontSize = 8
+    } else if (oldFontSize < 10) {
+      newFontSize = 10
+    } else if (oldFontSize >= 10) {
+      newFontSize = 2
     }
 
     console.log(`fontSize was ${oldFontSize} and is now ${newFontSize}`)
@@ -198,7 +198,7 @@ export default class Text extends Component {
               (this.state.settings.border ? 'splash-widget-bordered' : '')
             }
             style={{
-              fontSize: widgetSettings.fontSize + 'px',
+              fontSize: widgetSettings.fontSize + 'vw',
               textAlign: widgetSettings.align || 'center',
               color: widgetSettings.textColor || '#000'
             }}

@@ -72,6 +72,7 @@ export default class AppearanceSettings extends Component {
 
   onDarknessChange = (newValue) => {
     setBackgroundImage(backgroundImage, newValue)
+    backgroundImageDarkness = newValue
   }
 
   render() {

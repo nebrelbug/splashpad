@@ -18,7 +18,7 @@ export default class Clock extends Component {
       date: new Date(),
       settings: {
         align: 'center',
-        fontSize: 28,
+        fontSize: 2,
         border: false,
         textColor: '#000',
         displaySeconds: true
@@ -54,7 +54,7 @@ export default class Clock extends Component {
         console.log(widgetSettings)
         this.setState({
           settings: {
-            fontSize: widgetSettings.fontSize || 28,
+            fontSize: widgetSettings.fontSize || 2,
             align: widgetSettings.align || 'center',
             border: widgetSettings.border || false, // false is default
             textColor: widgetSettings.textColor || '#000',
@@ -98,7 +98,7 @@ export default class Clock extends Component {
               style={{
                 margin: 'auto',
                 textAlign: widgetSettings.align || 'center',
-                fontSize: widgetSettings.fontSize + 'px',
+                fontSize: widgetSettings.fontSize + 'vw',
                 lineHeight: widgetSettings.fontSize + 'px',
                 color: widgetSettings.textColor || 'black'
               }}
@@ -118,9 +118,8 @@ export default class Clock extends Component {
           onHide={this.props.hideSettings}
           settings={widgetSettings}
           onSettingsChange={this.onSettingsChange}
-          maxTextSize={200}
+          maxTextSize={20}
         >
-          <br />
           <SelectionControl
             type='switch'
             label='Display Seconds'

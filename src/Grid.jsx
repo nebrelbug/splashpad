@@ -53,8 +53,9 @@ export default class WidgetGrid extends React.Component {
 
     this.state = {
       items: widgets || [],
+      recentlyDeletedItems: [],
       widgetCount: widgetCount || false,
-      editing: false,
+      editing: true,
       widgetSettings: false // 'widget-0'
     }
 
@@ -182,7 +183,7 @@ export default class WidgetGrid extends React.Component {
       <div
         key={key}
         style={{
-          background: showSettingsControls ? 'rgba(200, 200, 200, 0.5)' : 'none'
+          background: showSettingsControls ? 'rgba(230, 230, 230, 0.5)' : 'none'
         }}
       >
         {showSettingsControls && (
@@ -224,6 +225,48 @@ export default class WidgetGrid extends React.Component {
               className='smallButton'
               icon
               onClick={() => {
+                var itemKey = this.state.items[ind].i
+
+                this.props.addToast(
+                  'Deleted ' + this.state.items[ind].type + ' widget',
+                  {
+                    children: 'UNDO',
+                    onClick: () => {
+                      console.log('Trying to undo delete item')
+                      var deletedItem
+                      this.setState(
+                        {
+                          recentlyDeletedItems: [
+                            ...this.state.recentlyDeletedItems
+                          ].filter(
+                            // loop through our recently deleted items
+                            // and find the one that has the same key
+                            // as the one we deleted
+                            function (recentlyDeletedItem) {
+                              if (recentlyDeletedItem.item.i === itemKey) {
+                                deletedItem = recentlyDeletedItem.item
+                                clearTimeout(recentlyDeletedItem.timeout)
+                              }
+                              return recentlyDeletedItem.item.i !== itemKey
+                            }
+                          )
+                        },
+                        () => {
+                          if (deletedItem) {
+                            let newItemsArray = [...this.state.items]
+                            // Insert the item in its old position
+                            newItemsArray.splice(ind, 0, deletedItem)
+                            this.setState({
+                              items: newItemsArray
+                            })
+                          }
+                        }
+                      )
+                    },
+                    style: { margin: '1em' }
+                  }
+                  // false
+                )
                 this.onRemoveItem(ind)
               }}
             >
@@ -340,11 +383,31 @@ export default class WidgetGrid extends React.Component {
   }
 
   onRemoveItem = (i) => {
-    console.log('removing', i)
+    var itemKey = this.state.items[i].i
+
     this.setState({
-      items: this.state.items.filter(function (item, ind) {
+      items: [...this.state.items].filter(function (item, ind) {
         return ind !== i
-      })
+      }),
+      recentlyDeletedItems: [
+        ...this.state.recentlyDeletedItems,
+        {
+          item: this.state.items[i],
+          timeout: setTimeout(() => {
+            console.log('Permanently deleting item')
+            this.setState({
+              recentlyDeletedItems: [...this.state.recentlyDeletedItems].filter(
+                // loop through our recently deleted items
+                // and delete the one that has the same key
+                // as the one we deleted
+                function (recentlyDeletedItem) {
+                  return recentlyDeletedItem.item.i !== itemKey
+                }
+              )
+            })
+          }, 5000)
+        }
+      ]
     })
   }
 

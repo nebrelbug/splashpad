@@ -51,7 +51,7 @@ export default function Weather(props) {
           class='weatherwidget-io-frame'
           title='Weather Widget'
           scrolling='no'
-          frameborder='0'
+          frameBorder='0'
           width='100%'
           src='https://weatherwidget.io/w/'
           style={{

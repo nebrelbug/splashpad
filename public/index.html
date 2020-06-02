@@ -24,7 +24,7 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>New Tab</title>
     <style>
       html {
         height: 100%;
@@ -60,6 +60,7 @@
         lsAppearance.backgroundImage &&
         lsAppearance.backgroundImage.data
       ) {
+        // TODO: I may want to move this into my initial code for performance reasons...
         var imageDarkness = lsAppearance.backgroundImageDarkness || 0
         document.body.style['background-image'] = `  linear-gradient(
           rgba(0, 0, 0, ${imageDarkness}), 
