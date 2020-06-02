@@ -311,7 +311,7 @@ export default class WidgetGrid extends React.Component {
                   width: '100%'
                 }}
               >
-                <div style={{ width: 'fit-content', margin: 'auto' }}>
+                <div style={{ width: 'min-content', margin: 'auto' }}>
                   {/* <Button
                     style={{
                       paddingTop: '10px'
