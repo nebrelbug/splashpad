@@ -26,13 +26,13 @@ var backgroundColor =
 
 var backgroundImage = getSplashSettings('appearance', 'backgroundImage') || null
 var backgroundImageDarkness =
-  getSplashSettings('appearance', 'backgroundImageDarkness') || 0
+  getSplashSettings('appearance', 'backgroundImageDarkness') || 0.2
 
 var backgroundImageURL =
   getSplashSettings('appearance', 'backgroundImageURL') ||
   '/background-images/white-mountain.jpg'
 
-var background = getSplashSettings('appearance', 'background') || 'color' // 'color' or 'image'
+var background = getSplashSettings('appearance', 'background') || 'image-url' // 'color' or 'image' or 'image-url'
 
 function setBackgroundColor(color) {
   document.body.style.background = color
@@ -170,7 +170,23 @@ export default class AppearanceSettings extends Component {
                     style={{ width: 'auto' }}
                     value={backgroundImageURL}
                     inlineIndicator={
-                      <Button icon className='text-fields__inline-btn'>
+                      <Button
+                        icon
+                        className='text-fields__inline-btn'
+                        onClick={() => {
+                          let defaultBackgroundImage =
+                            '/background-images/white-mountain.jpg'
+                          // Default background image
+                          backgroundImageURL = defaultBackgroundImage
+                          setBackgroundImageURL(
+                            defaultBackgroundImage,
+                            backgroundImageDarkness
+                          )
+                          this.setState({
+                            backgroundImageURL: defaultBackgroundImage
+                          })
+                        }}
+                      >
                         settings_backup_restore
                       </Button>
                     }

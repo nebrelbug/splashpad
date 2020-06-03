@@ -18,6 +18,11 @@ import {
   saveWidgetCount
 } from './browser-storage/widgets'
 
+import {
+  saveWidgetContent,
+  deleteWidgetContent
+} from './browser-storage/widget-content'
+
 import widgets, { fallbackWidget } from './widgets/widgets-list'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -30,9 +35,23 @@ const ReactGridLayout = WidthProvider(RGL)
 
 const defaultItems = [
   // defaults
-  { i: 'widget-0', x: 4, y: 0, w: 4, h: 2, minH: 2, minW: 2, type: 'search' },
-  { i: 'widget-2', x: 10, y: 0, w: 2, h: 2, type: 'clock' },
-  { i: 'widget-1', x: 0, y: 2, w: 3, h: 4, minH: 2, type: 'note' }
+  { i: 'widget-0', x: 3, y: 3, w: 6, h: 2, minH: 2, minW: 2, type: 'search' },
+  {
+    i: 'widget-2',
+    x: 3,
+    y: 0,
+    w: 6,
+    h: 3,
+    type: 'clock',
+    defaultSettings: {
+      align: 'center',
+      fontSize: 10,
+      border: false,
+      textColor: '#ffffff',
+      displaySeconds: false
+    }
+  },
+  { i: 'widget-1', x: 0, y: 2, w: 2, h: 4, minH: 2, type: 'note' }
 ]
 
 export default class WidgetGrid extends React.Component {
@@ -54,6 +73,7 @@ export default class WidgetGrid extends React.Component {
     this.state = {
       items: widgets || [],
       recentlyDeletedItems: [],
+      recentlyDeletedItemContents: [],
       widgetCount: widgetCount || false,
       editing: false,
       widgetSettings: false // 'widget-0'
@@ -234,6 +254,7 @@ export default class WidgetGrid extends React.Component {
                     onClick: () => {
                       console.log('Trying to undo delete item')
                       var deletedItem
+                      var deletedItemContent
                       this.setState(
                         {
                           recentlyDeletedItems: [
@@ -249,6 +270,22 @@ export default class WidgetGrid extends React.Component {
                               }
                               return recentlyDeletedItem.item.i !== itemKey
                             }
+                          ),
+                          recentlyDeletedItemContents: [
+                            ...this.state.recentlyDeletedItemContents
+                          ].filter(
+                            // loop through our recently deleted items' contents
+                            // and find the one that has the same key
+                            // as the one we deleted
+                            function (itemContent) {
+                              if (itemContent.key === itemKey) {
+                                deletedItemContent = itemContent.content
+                                console.log('Deleted item content: ')
+                                console.log(deletedItemContent)
+                                clearTimeout(itemContent.timeout)
+                              }
+                              return itemContent.key !== itemKey
+                            }
                           )
                         },
                         () => {
@@ -256,8 +293,13 @@ export default class WidgetGrid extends React.Component {
                             let newItemsArray = [...this.state.items]
                             // Insert the item in its old position
                             newItemsArray.splice(ind, 0, deletedItem)
-                            this.setState({
-                              items: newItemsArray
+                            saveWidgetContent(
+                              itemKey,
+                              deletedItemContent || {}
+                            ).then(() => {
+                              this.setState({
+                                items: newItemsArray
+                              })
                             })
                           }
                         }
@@ -276,6 +318,7 @@ export default class WidgetGrid extends React.Component {
         )}
         <WidgetComponent
           uniqueKey={key}
+          defaultSettings={el.defaultSettings || {}}
           settingsVisible={this.state.widgetSettings === key}
           hideSettings={this.hideWidgetSettings}
           editingGrid={this.state.editing}
@@ -385,29 +428,55 @@ export default class WidgetGrid extends React.Component {
   onRemoveItem = (i) => {
     var itemKey = this.state.items[i].i
 
-    this.setState({
-      items: [...this.state.items].filter(function (item, ind) {
-        return ind !== i
-      }),
-      recentlyDeletedItems: [
-        ...this.state.recentlyDeletedItems,
-        {
-          item: this.state.items[i],
-          timeout: setTimeout(() => {
-            console.log('Permanently deleting item')
-            this.setState({
-              recentlyDeletedItems: [...this.state.recentlyDeletedItems].filter(
-                // loop through our recently deleted items
-                // and delete the one that has the same key
-                // as the one we deleted
-                function (recentlyDeletedItem) {
-                  return recentlyDeletedItem.item.i !== itemKey
-                }
-              )
-            })
-          }, 5000)
-        }
-      ]
+    deleteWidgetContent(itemKey).then((oldContent) => {
+      this.setState({
+        items: [...this.state.items].filter(function (item, ind) {
+          return ind !== i
+        }),
+        recentlyDeletedItems: [
+          ...this.state.recentlyDeletedItems,
+          {
+            item: this.state.items[i],
+            timeout: setTimeout(() => {
+              console.log('Permanently deleting item')
+              this.setState({
+                recentlyDeletedItems: [
+                  ...this.state.recentlyDeletedItems
+                ].filter(
+                  // loop through our recently deleted items
+                  // and delete the one that has the same key
+                  // as the one we deleted
+                  function (recentlyDeletedItem) {
+                    return recentlyDeletedItem.item.i !== itemKey
+                  }
+                )
+              })
+            }, 5000)
+          }
+        ],
+        recentlyDeletedItemContents: [
+          ...this.state.recentlyDeletedItemContents,
+          {
+            content: oldContent,
+            key: itemKey,
+            timeout: setTimeout(() => {
+              console.log('Permanently deleting widget content')
+              this.setState({
+                recentlyDeletedItemContents: [
+                  ...this.state.recentlyDeletedItemContents
+                ].filter(
+                  // loop through our recently deleted items' contents
+                  // and delete the one that has the same key
+                  // as the one we deleted
+                  function (recentlyDeletedItem) {
+                    return recentlyDeletedItem.key !== itemKey
+                  }
+                )
+              })
+            }, 5000)
+          }
+        ]
+      })
     })
   }
 

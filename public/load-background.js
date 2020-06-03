@@ -36,4 +36,10 @@ if (lsAppearance.background === 'color' && lsAppearance.backgroundColor) {
   ), url(${lsAppearance.backgroundImage.data})`
 
   console.log('set background image')
+} else { // Default Background
+  let imageDarkness = lsAppearance.backgroundImageDarkness || 0
+  document.body.style['background-image'] = `linear-gradient(
+        rgba(0, 0, 0, ${imageDarkness}), 
+        rgba(0, 0, 0, ${imageDarkness})
+      ), url("/background-images/white-mountain.jpg")`
 }

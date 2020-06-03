@@ -24,7 +24,7 @@ export default class App extends PureComponent {
     this.state = {
       settingsOpen: true,
       settings: {
-        buttonStyle: getSplashSettings('appearance', 'buttonStyle') || 'dark'
+        buttonStyle: getSplashSettings('appearance', 'buttonStyle') || 'light'
       },
       toasts: [],
       autohide: true
@@ -128,6 +128,7 @@ export default class App extends PureComponent {
           id='splash-snackbar'
           toasts={this.state.toasts}
           autohide={this.state.autohide}
+          autohideTimeout={4500}
           onDismiss={this.dismissToast}
         />
       </>

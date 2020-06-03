@@ -21,7 +21,8 @@ export default class Clock extends Component {
         fontSize: 2,
         border: false,
         textColor: '#000',
-        displaySeconds: true
+        displaySeconds: true,
+        ...this.props.defaultSettings
       },
       visible: false
     }
@@ -52,13 +53,18 @@ export default class Clock extends Component {
       if (widgetSettings) {
         console.log('settings is:')
         console.log(widgetSettings)
+        let defaultSettings = this.props.defaultSettings
         this.setState({
           settings: {
-            fontSize: widgetSettings.fontSize || 2,
-            align: widgetSettings.align || 'center',
-            border: widgetSettings.border || false, // false is default
-            textColor: widgetSettings.textColor || '#000',
-            displaySeconds: widgetSettings.displaySeconds || false
+            fontSize: widgetSettings.fontSize || defaultSettings.fontSize || 2,
+            align: widgetSettings.align || defaultSettings.align || 'center',
+            border: widgetSettings.border || defaultSettings.border || false, // false is default
+            textColor:
+              widgetSettings.textColor || defaultSettings.textColor || '#000',
+            displaySeconds:
+              widgetSettings.displaySeconds ||
+              defaultSettings.displaySeconds ||
+              false
           },
           visible: true
         })
