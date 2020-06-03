@@ -1,10 +1,14 @@
+@import '../_globals';
+
 #splash-settings-dialog > section {
   padding: 0px;
   margin-top: -1px;
+  height: 100%;
 }
 
 #splash-settings-dialog > section > section {
   padding-top: 48px;
+  height: 100%;
 }
 
 #splash-settings-dialog > section > section > ul {
@@ -29,7 +33,7 @@
   > section
   > div
   .react-swipeable-view-container {
-  height: calc(485px - 48px);
+  height: 100%;
   //   overflow-x: auto;
 }
 
@@ -38,4 +42,18 @@
   overflow-y: hidden;
   padding: 12px;
   height: 100% !important;
+}
+
+.text-fields {
+  // The inline indicator expects an icon sized element
+  &__inline-btn.md-btn {
+    height: $md-font-icon-size;
+    padding: 0;
+    width: $md-font-icon-size;
+
+    @media #{$md-desktop-media} {
+      height: $md-font-icon-dense-size;
+      width: $md-font-icon-dense-size;
+    }
+  }
 }

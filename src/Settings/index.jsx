@@ -61,7 +61,7 @@ export default class SimpleFullPageDialog extends Component {
         transitionEnterTimeout={10}
         transitionLeaveTimeout={10}
         aria-labelledby='settings-dialog'
-        height='80%'
+        height='500px'
         width='80%'
         className='settings-dialog'
       >

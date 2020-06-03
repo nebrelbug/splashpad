@@ -2,8 +2,11 @@ import React, { Component } from 'react'
 import {
   Grid,
   Cell,
+  Card,
+  CardTitle,
+  Button,
   SelectionControlGroup,
-  SelectionControl,
+  TextField,
   Slider,
   ExpansionList,
   ExpansionPanel
@@ -24,6 +27,10 @@ var backgroundColor =
 var backgroundImage = getSplashSettings('appearance', 'backgroundImage') || null
 var backgroundImageDarkness =
   getSplashSettings('appearance', 'backgroundImageDarkness') || 0
+
+var backgroundImageURL =
+  getSplashSettings('appearance', 'backgroundImageURL') ||
+  '/background-images/white-mountain.jpg'
 
 var background = getSplashSettings('appearance', 'background') || 'color' // 'color' or 'image'
 
@@ -48,11 +55,26 @@ function setBackgroundImage(image, darkness) {
   }
 }
 
+function setBackgroundImageURL(imageURL, darkness) {
+  if (imageURL) {
+    document.body.style['background-image'] = `linear-gradient(
+        rgba(0, 0, 0, ${darkness}), 
+        rgba(0, 0, 0, ${darkness})
+      ), url(${imageURL})`
+    backgroundImageURL = imageURL
+    saveSplashSettings('appearance', 'backgroundImageURL', imageURL)
+    saveSplashSettings('appearance', 'background', 'image-url')
+
+    saveSplashSettings('appearance', 'backgroundImageDarkness', darkness)
+  }
+}
+
 export default class AppearanceSettings extends Component {
   constructor() {
     super()
     this.state = {
-      background: background
+      background: background,
+      backgroundImageURL: backgroundImageURL
     }
   }
 
@@ -71,7 +93,12 @@ export default class AppearanceSettings extends Component {
   }
 
   onDarknessChange = (newValue) => {
-    setBackgroundImage(backgroundImage, newValue)
+    let { background } = this.state
+    if (background === 'image') {
+      setBackgroundImage(backgroundImage, newValue)
+    } else if (background === 'image-url') {
+      setBackgroundImageURL(backgroundImageURL, newValue)
+    }
     backgroundImageDarkness = newValue
   }
 
@@ -101,15 +128,24 @@ export default class AppearanceSettings extends Component {
                     setBackgroundColor(backgroundColor)
                   } else if (value === 'image') {
                     setBackgroundImage(backgroundImage, backgroundImageDarkness)
+                  } else if (value === 'image-url') {
+                    setBackgroundImageURL(
+                      backgroundImageURL,
+                      backgroundImageDarkness
+                    )
                   }
                 }}
                 controls={[
                   {
-                    label: 'Color (default #FAFAFA)',
+                    label: 'Color',
                     value: 'color'
                   },
                   {
-                    label: 'Custom Image',
+                    label: 'Image URL',
+                    value: 'image-url'
+                  },
+                  {
+                    label: 'Upload Image',
                     value: 'image'
                   }
                 ]}
@@ -122,6 +158,51 @@ export default class AppearanceSettings extends Component {
                   handleChangeComplete={setBackgroundColor}
                   // onChangeComplete={this.handleChangeComplete}
                 />
+              )}
+              {this.state.background === 'image-url' && (
+                <>
+                  <TextField
+                    id='edit-background-image'
+                    label='Background Image URL'
+                    lineDirection='center'
+                    placeholder='https://example.com/image.jpg'
+                    // className='md-cell md-cell--bottom'
+                    style={{ width: 'auto' }}
+                    value={backgroundImageURL}
+                    inlineIndicator={
+                      <Button icon className='text-fields__inline-btn'>
+                        settings_backup_restore
+                      </Button>
+                    }
+                    onChange={(newURL) => {
+                      backgroundImageURL = newURL
+                      setBackgroundImageURL(newURL, backgroundImageDarkness)
+                      this.setState({ backgroundImageURL: newURL })
+                    }}
+                  />
+                  <br /> <br />
+                  {backgroundImageURL && (
+                    <>
+                      <Card className={'file-inputs__upload-card'}>
+                        <div className={'aspect-ratio'}>
+                          <img src={backgroundImageURL} alt={'Wallpaper'} />
+                        </div>
+                        <CardTitle title='Background Image' />
+                      </Card>
+                      <Slider
+                        id='darken-image-url-slider'
+                        label='Darken Image'
+                        min={0}
+                        max={1}
+                        step={0.1}
+                        valuePrecision={2}
+                        defaultValue={backgroundImageDarkness}
+                        onChange={this.onDarknessChange}
+                        discrete
+                      />
+                    </>
+                  )}
+                </>
               )}
               {this.state.background === 'image' && (
                 <>

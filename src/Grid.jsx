@@ -55,7 +55,7 @@ export default class WidgetGrid extends React.Component {
       items: widgets || [],
       recentlyDeletedItems: [],
       widgetCount: widgetCount || false,
-      editing: true,
+      editing: false,
       widgetSettings: false // 'widget-0'
     }
 

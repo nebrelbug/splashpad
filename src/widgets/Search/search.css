@@ -5,3 +5,15 @@
 #select-search-engine-menu > ul {
   position: relative;
 }
+
+/* Make sure the searchbar is big, even on wide screens */
+.splash-searchbar > form > div > div > button {
+  width: 48px !important;
+  height: 48px !important;
+  padding: 12px !important;
+}
+
+
+.splash-searchbar > form > div > div > button > i {
+  font-size: 24px !important;
+}

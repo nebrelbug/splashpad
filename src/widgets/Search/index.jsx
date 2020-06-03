@@ -30,7 +30,7 @@ export default class Search extends Component {
     getWidgetSettings(this.props.uniqueKey).then((widgetSettings) => {
       if (widgetSettings) {
         this.setState({
-          settings: { ...widgetSettings }
+          settings: { ...this.state.settings, ...widgetSettings }
         })
       }
     })
@@ -108,7 +108,7 @@ export default class Search extends Component {
           <div style={{ display: 'table-cell', verticalAlign: 'middle' }}>
             <Paper
               zDepth={2}
-              className='papers__example'
+              className='splash-searchbar'
               style={{
                 // padding: '6px',
                 paddingRight: '28px',
