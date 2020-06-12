@@ -1,5 +1,7 @@
 iconsrc := logo/logo.png
-icondir := icons
+icondir := dist/icons
+# Somehow it's possible to do this automatically
+# And loop over the sizes
 # iconsizes := {16,19,38,48,128,256}
 # iconfiles := $(shell echo $(icondir)/icon-$(iconsizes).png)
 

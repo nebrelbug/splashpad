@@ -22,7 +22,7 @@ export default class App extends PureComponent {
     super(props)
 
     this.state = {
-      settingsOpen: true,
+      settingsOpen: false,
       settings: {
         buttonStyle: getSplashSettings('appearance', 'buttonStyle') || 'light'
       },

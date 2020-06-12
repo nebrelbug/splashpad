@@ -35,17 +35,17 @@ const ReactGridLayout = WidthProvider(RGL)
 
 const defaultItems = [
   // defaults
-  { i: 'widget-0', x: 3, y: 3, w: 6, h: 2, minH: 2, minW: 2, type: 'search' },
+  { i: 'widget-0', x: 3, y: 0, w: 6, h: 2, minH: 2, minW: 2, type: 'search' },
   {
     i: 'widget-2',
-    x: 3,
+    x: 10,
     y: 0,
-    w: 6,
-    h: 3,
+    w: 2,
+    h: 2,
     type: 'clock',
     defaultSettings: {
       align: 'center',
-      fontSize: 10,
+      fontSize: 3,
       border: false,
       textColor: '#ffffff',
       displaySeconds: false

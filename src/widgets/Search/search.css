@@ -13,7 +13,14 @@
   padding: 12px !important;
 }
 
-
 .splash-searchbar > form > div > div > button > i {
   font-size: 24px !important;
+}
+
+.splash-searchbar .md-text-field {
+  font-size: 16px !important;
+}
+
+.splash-searchbar .md-divider--text-field {
+  margin-bottom: 8px !important;
 }

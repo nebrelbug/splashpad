@@ -38,10 +38,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && rm -rf dist/build && mv build dist/build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "icons": "make icons/icon-16.png && make icons/icon-19.png && make icons/icon-38.png && make icons/icon-48.png && make icons/icon-128.png && make icons/icon-256.png && make icons/icon-512.png"
+    "icons": "make dist/icons/icon-16.png && make dist/icons/icon-19.png && make dist/icons/icon-38.png && make dist/icons/icon-48.png && make dist/icons/icon-128.png && make dist/icons/icon-256.png && make dist/icons/icon-512.png"
   },
   "eslintConfig": {
     "extends": "react-app"

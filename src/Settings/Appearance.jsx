@@ -30,7 +30,7 @@ var backgroundImageDarkness =
 
 var backgroundImageURL =
   getSplashSettings('appearance', 'backgroundImageURL') ||
-  '/background-images/white-mountain.jpg'
+  './background-images/white-mountain.jpg'
 
 var background = getSplashSettings('appearance', 'background') || 'image-url' // 'color' or 'image' or 'image-url'
 
@@ -175,7 +175,7 @@ export default class AppearanceSettings extends Component {
                         className='text-fields__inline-btn'
                         onClick={() => {
                           let defaultBackgroundImage =
-                            '/background-images/white-mountain.jpg'
+                            './background-images/white-mountain.jpg'
                           // Default background image
                           backgroundImageURL = defaultBackgroundImage
                           setBackgroundImageURL(
