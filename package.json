@@ -18,7 +18,7 @@
     "@types/react-grid-layout": "^0.17.1",
     "dis-gui": "^2.1.0",
     "localforage": "^1.7.3",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "lorem-ipsum": "^2.0.3",
     "mousetrap": "^1.6.5",
     "react": "^16.13.1",
